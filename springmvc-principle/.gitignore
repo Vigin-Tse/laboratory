@@ -1,0 +1,8 @@
+/target
+/.settings
+.classpath
+.project
+velocity.log
+.rules
+.iml
+/.idea

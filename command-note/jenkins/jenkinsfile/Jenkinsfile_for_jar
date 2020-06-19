@@ -1,0 +1,85 @@
+def version
+pipeline {
+    agent {
+        label 'master'
+    }
+
+    tools {
+        maven 'apache-maven' 
+    }    
+    parameters {
+  		credentials name: 'svnUser',credentialType: 'com.cloudbees.plugins.credentials.common.StandardCredentials', defaultValue: '7add202d-c44d-43a8-8bb9-b2dcffec7064', description: '', required: false
+  		//string name:'svn', description:'svn url', trim:true, defaultValue:'http://172.28.4.123/svn/iWL/frame/fros-smart/trunk'
+	}
+    
+    stages {
+        stage('Checkout Code'){
+        	steps{
+        	    script {
+        	    	//检查是否有配置svn地址
+        	    	if(params.svn == null || params.svn.length() == 0){
+        	    	   error '请配置svn地址参数'                                         
+        	    	}
+        	    }        
+        	    //cleanWs(deleteDirs: false)	
+          		checkout([$class: 'SubversionSCM', 
+           		          additionalCredentials: [], 
+           		          //excludedCommitMessages: '', 
+           		          //excludedRegions: '', 
+           		          //excludedRevprop: '', 
+           		          //excludedUsers: '', 
+           		          //filterChangelog: true, 
+           		          ignoreDirPropChanges: false, 
+           		          includedRegions: '', 
+           		          locations: [[cancelProcessOnExternalsFail: true, 
+           		                       credentialsId: params.svnUser, 
+           		                       depthOption: 'infinity', 
+           		                       ignoreExternalsOption: false, 
+           		                       local: '.', 
+           		                       remote: "${params.svn}"]], 
+           		          quietOperation: true, 
+           		          workspaceUpdater: [$class: 'UpdateWithRevertUpdater']])       	
+            }
+        }
+	    stage('Initial Project') {
+		    steps {
+		    	script {
+		    		def pom = readMavenPom file:'pom.xml'
+		    		version = pom.version.substring(0,pom.version.lastIndexOf('.')) + '.' + env.BUILD_NUMBER
+           		 	//输出构建项目信息
+           		 	echo "Project Building Info:artifactId=${pom.artifactId},version=${version}"		
+           		 	pom=null    		
+		    	}
+		    }
+	    }
+		stage('Build Project') { 
+            steps {
+            	//设置构建项目版本
+            	sh "mvn versions:set -DnewVersion=${version} -DprocessAllModules=true -DgenerateBackupPoms=false"
+            	//更新项目依赖至最新版本
+            	sh 'mvn versions:use-releases -Dincludes=com.sinotrans.iwl:*,com.sinotrans.iwl.*:* -DgenerateBackupPoms=false'
+            	sh 'mvn versions:use-latest-releases -Dincludes=com.sinotrans.iwl:*,com.sinotrans.iwl.*:* -DgenerateBackupPoms=false'
+            	//编译项目            
+                sh 'mvn clean install -Dmaven.test.skip=true' 
+            }
+        }
+        
+        stage('Deploy To Nexus') { 
+            steps {
+                sh 'mvn deploy -Dmaven.test.skip=true' 
+            }
+        }
+        
+	    stage('Cleanup') {
+		    steps {
+		        echo 'Cleanup'
+		        cleanWs(deleteDirs: true)
+			}
+	    }
+    }
+	post {
+	    always {
+	      cleanWs()
+	    }
+	}    
+}

@@ -1,0 +1,20 @@
+windows：
+
+下载：https://github.com/microsoftarchive/redis/releases
+
+解压，进入当前目录。
+启动命令：redis-server.exe redis.windows.conf
+
+设定密码：
+打开redis.windows.conf 属性requirepass设置密码
+
+设置开机自启：（注意：windows要用管理员的身份运行cmd）
+windows：redis-server.exe --service-install redis.windows.conf --loglevel verbose
+linux：
+
+3、常用的redis服务命令。
+卸载服务：redis-server --service-uninstall
+
+开启服务：redis-server --service-start
+
+停止服务：redis-server --service-stop

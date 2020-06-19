@@ -1,0 +1,8 @@
+1) 到命令行中，将路径转到model_server的文件件
+2）运行image创建命令, 该命令会根据撰写的Dockfile文件，创建model server的image
+	sudo docker build -t model_server .
+3) 启动model server的容器。 其中，-d表示容器在后台运行； -p 5000:5000表示将本机的5000端口映射到容器的5000端口
+	sudo docker run -d -p 5000:5000 --name=model_server model_server
+4）容器启动，可以提供模型调用服务，检测方式如下：
+	在浏览器中输入：http://127.0.0.1:5000/yanshan/rectifier_2/temperature， 
+	如果显示“Hello R2 Temperature”表示成功启动

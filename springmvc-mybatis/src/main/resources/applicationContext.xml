@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop" 
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:mvc="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd 
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+    <!-- spring容器和spring-mvc是父子容器，spring容器会先加载，如果此时扫描了Controller,但未扫描到Service。
+         spring事务配置文件还有上下文都是通过org.springframework.web.context.ContextLoaderListener加载的，
+         而spring MVC的action是通过org.springframework.web.servlet.DispatcherServlet加载的 。
+         web是先启动ContextLoaderListener后启动DispatcherServlet 在ContextLoaderListener加载的时候action并没在容器中，
+         所以现在使用AOP添加事务或者扫描注解都是无用的。
+         结论：让spring扫描注册Service实现类，让MVC扫描注册Controller，此时spring父容器已经注册Service为Bean，此时事务可以得到正常配置。-->
+
+    <!-- 开启注解扫描 -->
+    <context:component-scan base-package="com.vg.springmvc">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
+
+    <!-- spring-mybatis整合 -->
+    <!-- 加载数据库属性文件 -->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+
+    <!--连接池数据源-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.user}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+    <!--配置事务管理器-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!--注入数据源-->
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    
+    <!-- 声明式事务配置(xml) -->
+<!--     <tx:advice id="advice" transaction-manager="transactionManager">  
+    <tx:attributes>  
+        <tx:method name="add*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception"/>  
+        <tx:method name="insert" propagation="REQUIRED" read-only="false"/>  
+    </tx:attributes>  
+    </tx:advice>   -->
+  
+    <!-- 配置增强 -->
+<!--     <aop:config>  
+        <aop:pointcut id="service" expression="execution (* com.vg.springmvc.service.*.*(..))"/>  
+        <aop:advisor advice-ref="advice" pointcut-ref="service"/>  
+    </aop:config>  -->
+
+    <!-- 开启事务注解 -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <!-- Mybatis的工厂 -->
+    <bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 核心配置文件的位置 -->
+        <property name="configLocation" value="classpath:sqlMapConfig.xml"/>
+        <!-- mapper映射文件的路径 -->
+        <property name="mapperLocations" value="classpath*:com/vg/springmvc/mapper/**/*.xml"/>
+    </bean>
+
+    <!-- 配置Mapper扫描 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 配置Mapper接口扫描包 -->
+        <property name="basePackage" value="com.vg.springmvc.mapper"/>
+    </bean>
+</beans>

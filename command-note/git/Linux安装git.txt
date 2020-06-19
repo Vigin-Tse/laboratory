@@ -1,0 +1,125 @@
+1、介绍
+
+　　使用Coding管理项目，上面要求使用的git版本为1.8.0以上，而很多yum源上自动安装的git版本为1.7，所以需要掌握手动编译安装git方法。
+
+2、安装git依赖包
+
+　　yum install curl-devel expat-devel gettext-devel openssl-devel zlib-devel gcc perl-ExtUtils-MakeMaker
+
+3、删除已有的git
+
+　　yum remove git
+
+4、下载git源码并解压
+
+  wget https://github.com/git/git/archive/v2.3.0.zip
+
+  unzip v2.3.0.zip
+
+  cd git-2.3.0
+  
+
+5、编译安装：
+
+   将其安装在“/usr/local/git”目录下。
+
+   make prefix=/usr/local/git all
+
+   make prefix=/usr/local/git install
+
+   因为服务器时间不对编译的过程中报错如下图，使用ntpdate自动校正系统时间。报错“Writing perl.mak for Git make[2]: *** [perl.mak] Error 1”，请重启apache服务，service httpd restart。  
+
+
+
+6、编译完成之后使用git --version 查看git版本，居然还是1.7.1，这是因为它默认使用了"/usr/bin"下的git。
+
+   你可以用下面的命令查看git所在的路径：
+
+   whereis git
+
+   git: /usr/bin/git /usr/local/git /usr/share/man/man1/git.1.gz
+   
+   
+7、我们要把编译安装的git路径放到环境变量里，让它替换"/usr/bin"下的git。为此我们可以修改“/etc/profile”文件（或者/etc/bashrc文件）。
+
+   vim /etc/profile
+
+   然后在文件的最后一行，添加下面的内容，然后保存退出。
+
+   export PATH=/usr/local/git/bin:$PATH   
+   
+   
+8、不想重启系统，使用source命令立即生效
+
+   source /etc/profile   
+   
+
+方法二==============================================================================================================================================================================
+
+3、Git安装
+(1) 从github官网下载或从其它网站下载
+wget https://codeload.github.com/git/git/archive/v2.8.0.tar.gz
+wget http://learning.happymmall.com/git/git-v2.8.0.tar.gz
+
+(2) 安装依赖
+sudo yum -y install zlib-devel openssl-devel cpio expat-devel gettext-devel curl-devel perl-ExtUtils-CBuilder perl-ExtUtils-MakeMaker
+
+image.png
+(3) 解压安装包
+tar -zxvf git-v2.8.0.tar.gz
+
+(4) 为了方便使用，创建一个软链接
+ln -s /usr/local/bin/* /usr/bin/
+
+(5) 编译
+cd git-2.8.0/
+sudo make prefix=/usr/local all
+
+(6) 执行安装命令
+sudo make prefix=/usr/local install
+
+5、git基础配置
+(1) 配置用户名（提交时会引用）
+git config --global user.name “cnj666”
+#请把cnj替换成自己的用户名
+
+(2) 配置邮箱（提交时会引用）
+git config --global user.email "cnj666@qq.com"
+
+(3) 其他配置
+git config --global merge.tool “kdiff3”
+#要是没安装KDiff3就不用设这一行
+
+git config --global core.autocrlf false
+#让Git不要管windows/Unix换行符转换的事
+
+(4) 编码配置
+git config --global gui.encoding utf-8
+#避免git gui中的中文乱码
+
+git config --global core.quotepath off
+#避免git status显示的中文文件名乱码
+
+Windows上还需要配置：
+git config --global core.ignorecase false
+
+2、Git ssh key pair配置
+1、在Linux的命令行下输入以下命令：
+ssh-keygen -t rsa -C “cnjcode@qq.com”
+
+2、然后一路回车，不要输入任何密码之类，生成ssh key pair
+
+3、ssh-add ~/.ssh/id_rsa
+
+4、cat ~/.ssh/id_rsa.pub
+
+执行ssh-add时出现Could not open a connection to your authentication agent
+
+执行ssh-add ~/.ssh/id_rsa报标题上的错误先执行 eval `ssh-agent`(是~键上的那个`)
+
+再执行ssh-add ~/.ssh/id_rsa成功ssh-add -l就有新加的rsa了
+
+查看私钥：cat ssh-add ~/.ssh/id_rsa
+
+查看公钥：cat ~/.ssh/id_rsa.pub
+   

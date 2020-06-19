@@ -1,0 +1,12 @@
+1.
+tar -zxvf jdk-8u241-linux-x64.tar.gz  -C /usr/java/
+
+2.
+vi /etc/profile
+
+#java
+export JAVA_HOME=/usr/java/jdk1.8.0_241
+export PATH=$JAVA_HOME/bin:$PATH
+export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib
+
+3.source /etc/profile

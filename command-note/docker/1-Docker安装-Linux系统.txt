@@ -1,0 +1,17 @@
+1) 更新系统package
+	 sudo apt-get update
+
+2) 安装相关依赖package
+	sudo apt-get install apt-transport-http ca-certificates curl gnupg-agent software-properties-common
+
+3）添加Docker的官方GPG钥匙
+	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+4）下载并安装稳定版的docker
+	sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
+5) 更新系统package
+	 sudo apt-get update
+
+6) 检查Docker是否安装成功
+	sudo docker run hello-world
