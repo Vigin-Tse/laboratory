@@ -232,6 +232,9 @@ public class VgHashMap<K, V> extends AbstractMap<K, V>
      */
     int threshold;
 
+    /**
+     * 负载因子 默认0.75
+     * */
     final float loadFactor;
 
 
@@ -271,6 +274,7 @@ public class VgHashMap<K, V> extends AbstractMap<K, V>
      * 所有值默认
      */
     public VgHashMap(){
+        //设置默认负载因子
         this.loadFactor = DEFAULT_LOAD_FACTOR;
     }
 
@@ -309,7 +313,7 @@ public class VgHashMap<K, V> extends AbstractMap<K, V>
         }
 
         this.loadFactor = loadFactor;
-        //重新定义了扩容的门限
+        //计算阀值
         this.threshold = tableSizeFor(initialCapacity);
     }
 
@@ -381,10 +385,10 @@ public class VgHashMap<K, V> extends AbstractMap<K, V>
 
 /* ======================================================== put()方法 ========================================================= */
 
-//    @Override
-//    public V put(K key, V value){
-//        return putVal(hash(key), key, value, false, true);
-//    }
+    @Override
+    public V put(K key, V value){
+        return putVal(hash(key), key, value, false, true);
+    }
 
     /**
      * 计算key的hash值
@@ -399,24 +403,92 @@ public class VgHashMap<K, V> extends AbstractMap<K, V>
         return key == null? 0 : (h = key.hashCode()) ^ (h >>> 16);
     }
 
-//    final V putVal(int hash, K key, V value,boolean onlyIfAbsent,
-//                   boolean evict){
-//
-//        Node<K, V> tab[];
-//        Node<K, V> p;
-//        int n, i;
-//
-//        if ((tab = this.table) == null || (n = tab.length) == 0){
-//            n = (tab = resize()).length;
-//        }
-//
-//        if ((p = tab[i = (n - 1) & hash]) == null){
-//            tab[i] = newNode(hash, key, value, null);
-//        }else{
-//
-//        }
-//        return null;
-//    }
+    final V putVal(int hash, K key, V value,boolean onlyIfAbsent, boolean evict){
+
+        Node<K, V> tab[];
+        Node<K, V> p;
+        int n, i;
+
+        // 1.校验table是否为空或者length等于0，如果是则调用resize方法进行初始化
+        if ((tab = this.table) == null || (n = tab.length) == 0){
+            n = (tab = resize()).length;
+        }
+
+        // 2.通过hash值计算索引位置，将该索引位置的头节点赋值给p，如果p为空则直接在该索引位置新增一个节点即可
+        if ((p = tab[i = (n - 1) & hash]) == null){
+
+            tab[i] = newNode(hash, key, value, null);
+        }else{
+
+            // table表该索引位置不为空，则进行查找
+            Node<K, V> e;
+            K k;
+
+            // 3.判断p节点的key和hash值是否跟传入的相等，如果相等, 则p节点即为要查找的目标节点，将p节点赋值给e节点
+            if(p.hash == hash && ((k = p.key) == key || (key != null && key.equals(k)))){
+                e = p;
+
+            // 4.判断p节点是否为TreeNode, 如果是则调用红黑树的putTreeVal方法查找目标节点
+            }else if(p instanceof TreeNode){
+                e = ((TreeNode<K, V>)p).putTreeVal(this, tab, hash, key, value);
+
+            // 5.走到这代表p节点为普通链表节点，则调用普通的链表方法进行查找，使用binCount统计链表的节点数
+            }else{
+                for(int binCount = 0; ; ++binCount){
+                    // 6.如果p的next节点为空时，则代表找不到目标节点，则新增一个节点并插入链表尾部
+                    if ((e = p.next) == null){
+                        p.next = newNode(hash, key, value, null);
+                        // 7.校验节点数是否超过8个，如果超过则调用treeifyBin方法将链表节点转为红黑树节点，
+                        // 减一是因为循环是从p节点的下一个节点开始的
+                        if (binCount >= TREEIFY_THRESHOLD - 1){
+                            treeifyBin(tab, hash);
+                        }
+                        break;
+                    }
+                    // 8.如果e节点存在hash值和key值都与传入的相同，则e节点即为目标节点，跳出循环
+                    if (e.hash == hash && ((k = e.key) == key || (key != null && key.equals(k)))){
+                        break;
+                    }
+                    p = e;
+                }
+            }
+
+            // 9.如果e节点不为空，则代表目标节点存在，使用传入的value覆盖该节点的value，并返回oldValue
+            if (e != null){
+                V oldValue = e.value;
+                if (!onlyIfAbsent || oldValue == null){
+                    e.value = value;
+                }
+                // 用于LinkedHashMap
+                afterNodeAccess(e);
+                return oldValue;
+            }
+        }
+
+        ++modCount;
+
+        // 10.如果插入节点后节点数超过阈值，则调用resize方法进行扩容
+        if(++size > threshold){
+            resize();
+        }
+        // 用于LinkedHashMap
+        afterNodeInsertion(evict);
+        return null;
+    }
+
+
+
+    /**
+     * 新增数组上的链表结点
+     * @param hash
+     * @param key
+     * @param value
+     * @param next
+     * @return
+     */
+    Node<K, V> newNode(int hash, K key, V value, Node<K, V> next){
+        return new Node<>(hash, key, value, next);
+    }
 
 /* ======================================================== get()方法 ========================================================= */
 
@@ -459,6 +531,119 @@ public class VgHashMap<K, V> extends AbstractMap<K, V>
             }
         }
         return null;
+    }
+
+/* ======================================================== resize ()方法 ========================================================= */
+
+    final Node<K, V>[] resize(){
+        Node<K, V>[] oldTab = table;
+        int oldCap = (oldTab == null)? 0 : oldTab.length;
+        //阈值
+        int oldThr = threshold;
+        int newCap, newThr = 0;
+
+        // 1.老表的容量不为0，即老表不为空
+        if (oldCap > 0) {
+            // 1.1 判断老表的容量是否超过最大容量值：如果超过则将阈值设置为Integer.MAX_VALUE，并直接返回老表,
+            // 此时oldCap * 2比Integer.MAX_VALUE大，因此无法进行重新分布，只是单纯的将阈值扩容到最大
+            if (oldCap >= MAXIMUM_CAPACITY) {
+                threshold = Integer.MAX_VALUE;
+                return oldTab;
+            // 1.2 将newCap赋值为oldCap的2倍，如果newCap<最大容量并且oldCap>=16, 则将新阈值设置为原来的两倍
+            } else if ((newCap = oldCap << 1) < MAXIMUM_CAPACITY && oldCap >= DEFAULT_INITIAL_CAPACITY) {
+                newThr = oldThr << 1;
+            }
+        // 2.如果老表的容量为0 并且 老表的阈值大于0, 是因为初始容量被放入阈值，则将新表的容量设置为老表的阈值
+        }else if(oldThr > 0){
+            newCap = oldThr;
+        }else{
+            // 3.老表的容量为0, 老表的阈值为0，这种情况是没有传初始容量的new方法创建的空表，将阈值和容量设置为默认值
+            newCap = DEFAULT_INITIAL_CAPACITY;
+            newThr = (int)(DEFAULT_INITIAL_CAPACITY * DEFAULT_LOAD_FACTOR);
+        }
+
+        // 4.如果新表的阈值为空, 则通过新的容量*负载因子获得阈值
+        if (newThr == 0){
+            float ft = (float)newCap * loadFactor;
+            newThr = (newCap < MAXIMUM_CAPACITY && ft < (float)MAXIMUM_CAPACITY ? (int)ft : Integer.MAX_VALUE);
+        }
+        // 5.将当前阈值设置为刚计算出来的新的阈值，定义新表，容量为刚计算出来的新容量，将table设置为新定义的表。
+        threshold = newThr;
+
+        Node<K,V>[] newTab = (Node<K,V>[])new Node[newCap];
+        table = newTab;
+        // 6.如果老表不为空，则需遍历所有节点，将节点赋值给新表
+        if (oldTab != null){
+            for(int j=0; j < oldCap; ++j){
+                Node<K,V> e;
+                // 将索引值为j的老表头节点赋值给e
+                if ((e = oldTab[j]) != null){
+                    // 将老表的节点设置为空, 以便垃圾收集器回收空间
+                    oldTab[j] = null;
+                    // 7.如果e.next为空, 则代表老表的该位置只有1个节点，计算新表的索引位置, 直接将该节点放在该位置
+                    if(e.next == null){
+                        newTab[e.hash & (newCap - 1)] = e;
+
+                    // 8.如果是红黑树节点，则进行红黑树的重hash分布(跟链表的hash分布基本相同)
+                    }else if (e instanceof TreeNode){
+                        ((TreeNode<K,V>) e).split(this, newTab, j, oldCap);
+
+                    // 9.如果是普通的链表节点，则进行普通的重hash分布
+                    }else{
+
+                        // 存储索引位置为:“原索引位置”的节点
+                        Node<K,V> loHead = null, loTail = null;
+
+                        // 存储索引位置为:“原索引位置+oldCap”的节点
+                        Node<K,V> hiHead = null, hiTail = null;
+                        Node<K,V> next;
+                        do{
+                            next = e.next;
+                            // 9.1 如果e的hash值与老表的容量进行与运算为0,则扩容后的索引位置跟老表的索引位置一样
+                            if ((e.hash & oldCap) == 0){
+                                // 如果loTail为空, 代表该节点为第一个节点
+                                if(loTail == null){
+                                    // 则将loHead赋值为第一个节点
+                                    loHead = e;
+                                }else{
+                                    // 否则将节点添加在loTail后面
+                                    loTail.next = e;
+                                }
+                                // 并将loTail赋值为新增的节点
+                                loTail = e;
+
+                            // 9.2 如果e的hash值与老表的容量进行与运算为1,则扩容后的索引位置为:老表的索引位置＋oldCap
+                            }else{
+                                // 如果hiTail为空, 代表该节点为第一个节点
+                                if(hiTail == null){
+                                    // 则将hiHead赋值为第一个节点
+                                    hiHead = e;
+                                }else{
+                                    // 否则将节点添加在hiTail后面
+                                    hiTail.next = e;
+                                }
+                                // 并将hiTail赋值为新增的节点
+                                hiTail = e;
+                            }
+                        }while ((e = next) != null);
+                        // 10.如果loTail不为空（说明老表的数据有分布到新表上“原索引位置”的节点），则将最后一个节点
+                        // 的next设为空，并将新表上索引位置为“原索引位置”的节点设置为对应的头节点
+                        if (loTail != null){
+                            loTail.next = null;
+                            newTab[j] = loHead;
+                        }
+
+                        // 11.如果hiTail不为空（说明老表的数据有分布到新表上“原索引+oldCap位置”的节点），则将最后
+                        // 一个节点的next设为空，并将新表上索引位置为“原索引+oldCap”的节点设置为对应的头节点
+                        if(hiTail != null){
+                            hiTail.next = null;
+                            newTab[j + oldCap] = hiHead;
+                        }
+                    }
+                }
+            }
+        }
+        return newTab;
     }
 
 }
