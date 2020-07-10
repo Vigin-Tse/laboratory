@@ -384,12 +384,12 @@ public class VgHashMap<K, V> extends AbstractMap<K, V>
     }
 
 /* ======================================================== put()方法 ========================================================= */
-
+/*
     @Override
     public V put(K key, V value){
         return putVal(hash(key), key, value, false, true);
     }
-
+*/
     /**
      * 计算key的hash值
      * 与（&）、非（~）、或（|）、异或（^）
@@ -402,7 +402,7 @@ public class VgHashMap<K, V> extends AbstractMap<K, V>
         // 1.先拿到key的hashCode值; 2.将hashCode的高16位参与运算
         return key == null? 0 : (h = key.hashCode()) ^ (h >>> 16);
     }
-
+/*
     final V putVal(int hash, K key, V value,boolean onlyIfAbsent, boolean evict){
 
         Node<K, V> tab[];
@@ -475,7 +475,7 @@ public class VgHashMap<K, V> extends AbstractMap<K, V>
         afterNodeInsertion(evict);
         return null;
     }
-
+*/
 
 
     /**
@@ -534,7 +534,7 @@ public class VgHashMap<K, V> extends AbstractMap<K, V>
     }
 
 /* ======================================================== resize ()方法 ========================================================= */
-
+/*
     final Node<K, V>[] resize(){
         Node<K, V>[] oldTab = table;
         int oldCap = (oldTab == null)? 0 : oldTab.length;
@@ -645,5 +645,5 @@ public class VgHashMap<K, V> extends AbstractMap<K, V>
         }
         return newTab;
     }
-
+*/
 }
