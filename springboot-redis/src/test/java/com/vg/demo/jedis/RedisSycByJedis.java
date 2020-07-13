@@ -30,7 +30,7 @@ public class RedisSycByJedis {
     private RedisLock lock;
 
     @Test
-    public void buyTicket() throws InterruptedException {
+    public void buyTicketByLock() throws InterruptedException {
         redisLockService.buy();
 
         Thread.sleep(5000);

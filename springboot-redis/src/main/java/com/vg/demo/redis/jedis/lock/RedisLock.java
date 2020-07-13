@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,14 +20,8 @@ import java.util.UUID;
 @Service
 public class RedisLock{
 
-    @Value("${redis.host}")
-    private String host;
-
-    @Value("${redis.port}")
-    private int port;
-
-    @Value("${redis.ps}")
-    private String ps;
+    @Autowired
+    private JedisPool jedisPool;
 
     private String redisLockKey = "rkey2020";
 
@@ -34,9 +29,7 @@ public class RedisLock{
 
 
     private Jedis getJedis(){
-        Jedis jedis = new Jedis(host, port);
-        jedis.auth(ps);
-        return jedis;
+        return jedisPool.getResource();
     }
 
     /**
