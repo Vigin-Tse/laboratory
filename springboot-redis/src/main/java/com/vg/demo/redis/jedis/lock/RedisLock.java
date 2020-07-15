@@ -78,7 +78,8 @@ public class RedisLock{
 
     /***
      * 使用lua脚本解锁
-     * GET 判断 del 把这三个操作打包给redis去执行，使用Lua脚本去执行。(保证这三步操作的原子性)
+     * GET、判断、del
+     * 把这三个操作打包给redis去执行，使用Lua脚本去执行。(保证这三步操作的原子性)
      * @return
      */
     public void unlock() {
