@@ -17,4 +17,9 @@
     <update id = "updateUser">
         update sys_user set name = #{name}, age = #{age} where id = #{id}
     </update>
+
+    <insert id="insertUserByName">
+        insert into sys_user (name, age)
+        values (#{name}, #{age})
+    </insert>
 </mapper>

@@ -62,6 +62,7 @@
         <property name="configLocation" value="classpath:sqlMapConfig.xml"/>
         <!-- mapper映射文件的路径 -->
         <property name="mapperLocations" value="classpath*:com/vg/springmvc/mapper/**/*.xml"/>
+<!--        <property name="mapperLocations" value="classpath*:com/vg/springmvc/mapper/SysUserMapper.xml"/>-->
     </bean>
 
     <!-- 配置Mapper扫描 -->

@@ -9,5 +9,7 @@ public interface SysUserMapper {
     public SysUserModel getById(Integer id);
     
     public void updateUser(SysUserModel user);
+
+    public void insertUserByName(SysUserModel user);
     
 }

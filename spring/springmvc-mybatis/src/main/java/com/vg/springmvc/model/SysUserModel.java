@@ -6,6 +6,10 @@ public class SysUserModel {
     private String name;
     private Integer age;
 
+    public SysUserModel(String name){
+        this.name = name;
+    }
+
     public Integer getId() {
         return id;
     }
