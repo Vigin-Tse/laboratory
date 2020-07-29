@@ -36,7 +36,7 @@ public class TopicProvider {
         manMap.put("messageId", messageId);
         manMap.put("messageData", messageData);
         manMap.put("createTime", createTime);
-        rabbitTemplate.convertAndSend( TopicConfiguration.TOPIC_EXCHANGE, TopicConfiguration.TOPIC_MAN_BINDINGKEY, manMap);
+        rabbitTemplate.convertAndSend(TopicConfiguration.TOPIC_EXCHANGE, TopicConfiguration.TOPIC_MAN_BINDINGKEY, manMap);
     }
 
     @RequestMapping("/topic/mess2")

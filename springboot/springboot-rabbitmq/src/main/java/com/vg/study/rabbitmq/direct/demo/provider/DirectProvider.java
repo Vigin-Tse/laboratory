@@ -24,8 +24,8 @@ public class DirectProvider {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    public void sendDirectMessage(int sendTimes){
-        for(int i = 1; i <= sendTimes; i++){
+    public void sendDirectMessage(int sendTimes) {
+        for (int i = 1; i <= sendTimes; i++) {
             String messageId = String.valueOf(String.valueOf(i));
             String messageData = "test message, hello!";
             String createTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));

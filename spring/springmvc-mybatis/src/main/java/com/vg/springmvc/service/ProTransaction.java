@@ -10,6 +10,11 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 /**
  * 编程式事务 demo
  */
@@ -27,6 +32,13 @@ public class ProTransaction {
 //    @Autowired
 //    private DefaultTransactionDefinition transactionDefinition;
 
+
+    @Autowired
+    private DataSource dataSource;
+
+    /**
+     * 编程式事物提交
+     */
 //    @Transactional
     public void inserUser(){
         DefaultTransactionDefinition transactionDefinition = new DefaultTransactionDefinition();
@@ -36,11 +48,39 @@ public class ProTransaction {
         try {
             this.userMapper.insertUser(new SysUserModel("小一"));
             this.userMapper.insertUser(new SysUserModel("小二"));
-            int i = 1/0;
+//            int i = 1/0;
             dataSourceTransactionManager.commit(transactionStatus);
         }catch (Exception e){
             e.printStackTrace();
             dataSourceTransactionManager.rollback(transactionStatus);
+        }
+    }
+
+    /**
+     * jdbc提交
+     * @throws SQLException
+     */
+    public void deleteUser() throws SQLException {
+        Connection connection = this.dataSource.getConnection();
+        connection.setAutoCommit(false);
+        Statement statement = connection.createStatement();
+        try {
+            statement.execute("delete from sys_user where name = '小一';");
+            statement.execute("delete from sys_user where name = '小二';");
+            int i = 1/0;
+            connection.commit();
+            System.out.println("提交");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                connection.rollback();
+                System.out.println("回滚");
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }finally {
+            statement.close();
+            connection.close();
         }
 
     }

@@ -39,10 +39,10 @@ public class RedisSycByJedis {
     }
 
     @Test
-    public void jedisConn(){
+    public void jedisConn() {
 
-        for(int i = 10; i > 0; i--){
-            new Thread(()->{
+        for (int i = 10; i > 0; i--) {
+            new Thread(() -> {
                 jedis.set(UUID.randomUUID().toString(), "value", "NX", "EX", 30);
             }).start();
         }
@@ -50,12 +50,12 @@ public class RedisSycByJedis {
     }
 
     @Test
-    public void jedisLock(){
+    public void jedisLock() {
         try {
             System.out.println(lock.lock());
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             lock.unlock();
         }
     }

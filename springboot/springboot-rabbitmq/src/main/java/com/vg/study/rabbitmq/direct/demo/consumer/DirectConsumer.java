@@ -18,7 +18,7 @@ import java.util.Map;
 public class DirectConsumer {
 
     @RabbitHandler
-    public void getMessage(Map messages){
+    public void getMessage(Map messages) {
         System.out.println(JSON.toJSON(messages));
     }
 }

@@ -31,7 +31,7 @@ public class User implements Serializable {
         this.age = age;
     }
 
-    public User(Integer id, String name, Integer age){
+    public User(Integer id, String name, Integer age) {
         this.id = id;
         this.name = name;
         this.age = age;

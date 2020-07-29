@@ -16,23 +16,23 @@ public class RedisTest01 {
     RedisConnectionDemo redisConn;
 
     @Test
-    public void getUserCache(){
+    public void getUserCache() {
         User user = this.redisConn.getUserById(1);
     }
 
     @Test
-    public void setStringRedisTemplate(){
-        this.redisConn.setByCache("2","stringRedisTemplate");
+    public void setStringRedisTemplate() {
+        this.redisConn.setByCache("2", "stringRedisTemplate");
     }
 
     @Test
-    public void getBySpringCacheUseId(){
+    public void getBySpringCacheUseId() {
         User user = this.redisConn.getBySpringCacheUseId("1");
         System.out.println(user);
     }
 
     @Test
-    public void updateUser(){
+    public void updateUser() {
         User user = this.redisConn.updateUser("1");
         System.out.println(user);
     }

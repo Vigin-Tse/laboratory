@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RedisDemoController {
 
     @GetMapping("/demo")
-    public String demo(){
+    public String demo() {
         return "hello world!";
     }
 }

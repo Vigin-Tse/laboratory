@@ -16,7 +16,7 @@ public class DemoController {
     private DemoService demoService;
 
     @PostMapping("/hey")
-    public String sayHello() throws RuntimeException{
+    public String sayHello() throws RuntimeException {
         return demoService.sayHey("0");
     }
 }

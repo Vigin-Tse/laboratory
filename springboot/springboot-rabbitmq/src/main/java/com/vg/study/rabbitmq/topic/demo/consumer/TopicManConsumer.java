@@ -18,7 +18,7 @@ import java.util.Map;
 public class TopicManConsumer {
 
     @RabbitHandler
-    public void getMessage(Map messages){
+    public void getMessage(Map messages) {
         System.out.println("Man-consumer" + JSON.toJSON(messages));
     }
 }

@@ -16,9 +16,9 @@ public class DemoServiceImpl implements DemoService {
 
     private static final Logger logger = LoggerFactory.getLogger(DemoServiceImpl.class);
 
-    public String sayHey(String name){
+    public String sayHey(String name) {
         logger.info("我是日志");
-        if ("0".equals(name)){
+        if ("0".equals(name)) {
             throw new RuntimeException("name is 0");
         }
         return "Hey," + name + "!";

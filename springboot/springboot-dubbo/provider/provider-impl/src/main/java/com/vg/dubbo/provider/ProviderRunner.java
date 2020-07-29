@@ -13,7 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @EnableDubbo
 public class ProviderRunner {
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         SpringApplication.run(ProviderRunner.class, args);
     }
 }

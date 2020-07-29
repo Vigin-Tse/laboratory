@@ -26,14 +26,14 @@ public class JedisConfig {
     private String ps;
 
     @Bean
-    public Jedis Jedis(){
+    public Jedis Jedis() {
         Jedis jedis = new Jedis(host, port);
         jedis.auth(ps);
         return jedis;
     }
 
     @Bean
-    public JedisPool jedisPool(){
+    public JedisPool jedisPool() {
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         //制一个pool可分配多少个jedis实例
         jedisPoolConfig.setMaxTotal(1000);

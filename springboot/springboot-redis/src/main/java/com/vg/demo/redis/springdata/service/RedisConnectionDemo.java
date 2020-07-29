@@ -25,7 +25,7 @@ public class RedisConnectionDemo {
         stringRedisTemplate.opsForValue().set(userId, userInfo);
     }
 
-    public User getUserById(Integer userId){
+    public User getUserById(Integer userId) {
         User user = null;
 
         // 1、 判定缓存中是否存在
@@ -36,7 +36,7 @@ public class RedisConnectionDemo {
         }
 
         //2、不存在则读取数据库或者其他地方的值
-        user = new User(userId,"张三", 15);
+        user = new User(userId, "张三", 15);
         System.out.println("从数据库中读取到值：" + user);
 
         // 3、 同步存储value到缓存。
@@ -51,7 +51,7 @@ public class RedisConnectionDemo {
     // value~单独的缓存前缀
     // key缓存key 可以用springEL表达式
     @Cacheable(cacheManager = "cacheManager", value = "c-1", key = "#id")
-    public User getBySpringCacheUseId(String id){
+    public User getBySpringCacheUseId(String id) {
 
         User user = new User(Integer.valueOf(id), "tony", 16);
         System.out.println("数据库：" + user);
@@ -60,9 +60,9 @@ public class RedisConnectionDemo {
 
     /**
      *
-     * */
+     */
     @CachePut(cacheManager = "cacheManager", value = "c-1", key = "#id", condition = "#result ne null ")
-    public User updateUser(String id){
+    public User updateUser(String id) {
 
         User user = new User(Integer.valueOf(id), "update", 16);
         System.out.println("数据库更新：" + user);

@@ -18,7 +18,7 @@ import java.util.UUID;
  * @create 2020/7/9 13:43
  */
 @Service
-public class RedisLock{
+public class RedisLock {
 
     @Autowired
     private JedisPool jedisPool;
@@ -28,7 +28,7 @@ public class RedisLock{
     private ThreadLocal<String> tl = new ThreadLocal<>();
 
 
-    private Jedis getJedis(){
+    private Jedis getJedis() {
         return jedisPool.getResource();
     }
 
@@ -38,20 +38,21 @@ public class RedisLock{
      * 1. 使用SetNX 保证redis的数据插入和设置缓存失效时间是原子操作
      * 2. value 为随机唯一的标识，解锁时候认证，以防解错锁
      * 3. 必须加上缓存失效时间防止死锁
+     *
      * @return 加锁成功返回ture
      */
     public boolean lock() throws InterruptedException {
         boolean islock = false;
         //阻塞式方法获取锁
-        while (!islock){
+        while (!islock) {
             System.out.println(Thread.currentThread() + "尝试加锁");
             //加锁
             islock = tryLock();
-            if (islock){
+            if (islock) {
                 System.out.println(Thread.currentThread() + "加锁成功");
             }
             //加锁失败，休眠1s，再尝试获取锁
-            if (!islock){
+            if (!islock) {
                 System.out.println(Thread.currentThread() + "加锁失败，休眠1s");
                 Thread.sleep(1000);
             }
@@ -60,14 +61,15 @@ public class RedisLock{
     }
 
     /**
-     *非阻塞式锁
+     * 非阻塞式锁
+     *
      * @return
      */
     private boolean tryLock() {
         Jedis jedis = this.getJedis();
         String value = UUID.randomUUID().toString();
         String result = jedis.set(redisLockKey, value, "NX", "EX", 2);
-        if (!StringUtils.isEmpty(result) && "OK".equals(result)){
+        if (!StringUtils.isEmpty(result) && "OK".equals(result)) {
             //加锁成功，保存线程副本value值，方便同一线程解锁时认证锁的持有人（value）
             tl.set(value);
             return true;
@@ -93,6 +95,6 @@ public class RedisLock{
         argv.add(tl.get());
 
         Long result = (Long) jedis.eval(luaScript, keys, argv);
-        System.out.println(Thread.currentThread() +"解锁结果：" + result);
+        System.out.println(Thread.currentThread() + "解锁结果：" + result);
     }
 }

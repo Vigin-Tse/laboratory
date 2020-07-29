@@ -9,17 +9,17 @@ import org.springframework.stereotype.Service;
  * @create 2020/5/6 16:54
  */
 @Service
-public class DemoSonServiceImpl{
+public class DemoSonServiceImpl {
 
     private DemoService demoService;
 
     @Autowired
-    private void demoServiceSetter(DemoService demoService){
+    private void demoServiceSetter(DemoService demoService) {
         this.demoService = demoService;
 //        System.out.println(demoService.sayHey("son call father"));
     }
 
-    public void hey(){
+    public void hey() {
         System.out.println("demo's son");
     }
 }

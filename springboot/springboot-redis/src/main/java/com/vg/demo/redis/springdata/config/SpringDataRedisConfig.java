@@ -30,35 +30,37 @@ public class SpringDataRedisConfig {
     /**
      * 创建redis连接
      * 使用lettuce
-     * */
+     */
     @Bean
-    public LettuceConnectionFactory redisConnectionFactory(){
+    public LettuceConnectionFactory redisConnectionFactory() {
         return new LettuceConnectionFactory(new RedisStandaloneConfiguration(host, port));
     }
 
 
-    /**StringRedisTemplate
-     *
+    /**
+     * StringRedisTemplate
+     * <p>
      * 默认采用的是String的序列化策略，
      * 保存的key和value都是采用此策略序列化保存
-     * */
+     */
     @Bean
-    public StringRedisTemplate stringRedisTemplate(RedisConnectionFactory redisConnectionFactory){
+    public StringRedisTemplate stringRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
         StringRedisTemplate stringRedisTemplate = new StringRedisTemplate();
         stringRedisTemplate.setConnectionFactory(redisConnectionFactory);
         return stringRedisTemplate;
     }
 
-    /**RedisTemplate
-     *
-     *redisTemplate.opsForValue();//操作字符串
-     *redisTemplate.opsForHash();//操作hash
-     *redisTemplate.opsForList();//操作list
-     *redisTemplate.opsForSet();//操作set
-     *redisTemplate.opsForZSet();//操作有序set
-     * */
+    /**
+     * RedisTemplate
+     * <p>
+     * redisTemplate.opsForValue();//操作字符串
+     * redisTemplate.opsForHash();//操作hash
+     * redisTemplate.opsForList();//操作list
+     * redisTemplate.opsForSet();//操作set
+     * redisTemplate.opsForZSet();//操作有序set
+     */
     @Bean
-    public RedisTemplate redisTemplate(LettuceConnectionFactory redisConnectionFactory){
+    public RedisTemplate redisTemplate(LettuceConnectionFactory redisConnectionFactory) {
         RedisTemplate redisTemplate = new RedisTemplate();
 
         redisTemplate.setConnectionFactory(redisConnectionFactory);
@@ -68,10 +70,10 @@ public class SpringDataRedisConfig {
     }
 
     /**
-     *配置spring cache注解功能
-     * */
+     * 配置spring cache注解功能
+     */
     @Bean
-    public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory){
+    public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
         RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory);
         RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig();
         RedisCacheManager cacheManager = new RedisCacheManager(redisCacheWriter, redisCacheConfiguration);
