@@ -1,7 +1,7 @@
-package com.vg.basic.proxy.dynamic.demo;
+package com.vg.basic.proxy.jdk.demo;
 
-import com.vg.basic.proxy.dynamic.demo.impl.Bus;
-import com.vg.basic.proxy.dynamic.demo.impl.CarProxyFactory;
+import com.vg.basic.proxy.jdk.demo.impl.Bus;
+import com.vg.basic.proxy.jdk.demo.impl.CarProxyFactory;
 
 /**
  * @Description

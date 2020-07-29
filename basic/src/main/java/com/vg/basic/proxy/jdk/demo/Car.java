@@ -1,4 +1,4 @@
-package com.vg.basic.proxy.dynamic.demo;
+package com.vg.basic.proxy.jdk.demo;
 
 /**
  * @Description

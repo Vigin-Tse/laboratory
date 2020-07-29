@@ -1,9 +1,9 @@
-package com.vg.basic.proxy.dynamic.demo.impl;
+package com.vg.basic.proxy.jdk.demo.impl;
 
-import com.vg.basic.proxy.dynamic.demo.Car;
+import com.vg.basic.proxy.jdk.demo.Car;
 
 /**
- * @Description
+ * @Description 目标类
  * @Author xieweij
  * @create 2020/5/8 14:34
  */

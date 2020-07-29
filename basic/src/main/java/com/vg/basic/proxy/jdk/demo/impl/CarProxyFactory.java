@@ -1,13 +1,13 @@
-package com.vg.basic.proxy.dynamic.demo.impl;
+package com.vg.basic.proxy.jdk.demo.impl;
 
-import com.vg.basic.proxy.dynamic.demo.Car;
+import com.vg.basic.proxy.jdk.demo.Car;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 /**
- * @Description
+ * @Description 代理类
  * @Author xieweij
  * @create 2020/5/8 14:35
  */
