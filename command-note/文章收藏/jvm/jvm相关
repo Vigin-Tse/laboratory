@@ -1,0 +1,5 @@
+类的成员变量存在JVM的哪块内存区域
+https://blog.csdn.net/q503385724/article/details/87910929
+
+常量池（运行时常量池 静态常量池）
+https://blog.csdn.net/HNUST_LIZEMING/article/details/88887663
