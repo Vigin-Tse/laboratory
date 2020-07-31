@@ -3,3 +3,23 @@ https://blog.csdn.net/q503385724/article/details/87910929
 
 常量池（运行时常量池 静态常量池）
 https://blog.csdn.net/HNUST_LIZEMING/article/details/88887663
+
+jdk8常量池整理
+https://www.cnblogs.com/wangymd/p/13213265.html
+
+（精品）【JVM】Java 8 中的常量池、字符串池、包装类对象池
+https://www.cnblogs.com/itplay/p/11137526.html
+
+常量池总结：
+(1)
+1.7之前,常量池在方法区（永久代）
+1.7，字符串常量池位置从方法区搬到了堆中； 运行时常量池还在方法区。
+1.8，永久代被元空间(Metaspace)取代, 字符串常量池位置还在堆中, 运行时常量池位置变成了元空间(Metaspace)。
+
+(2)
+原则：
+     方法体中:
+             引用变量和基本类型的变量都在栈上，其他都在堆上。如果是基本类型（byte\short\int\long\char\float\double\boolean），会把值直接存储在栈（局部变量表）；
+             如果是引用类型，比如String s = new String("william");会把其对象存储在堆，而把这个对象的引用（指针）存储在栈。
+             如果是String、如String a = "aaa"，会在编译时期把字面量放到JVM字符串常量池。
+             如果是（基础类型的）包装类型，如Integer i = 1，放到包装类对象池技术（注意：和jvm常量池没有关系）。
