@@ -1,7 +1,7 @@
 package com.vg.basic.proxy.staticproxy.demo;
 
 /**
- * @Description
+ * @Description 委托类
  * @Author xieweij
  * @create 2020/5/8 14:10
  */

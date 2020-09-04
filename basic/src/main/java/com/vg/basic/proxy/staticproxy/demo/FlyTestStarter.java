@@ -1,8 +1,5 @@
 package com.vg.basic.proxy.staticproxy.demo;
 
-import com.vg.basic.proxy.staticproxy.demo.impl.Bird;
-import com.vg.basic.proxy.staticproxy.demo.impl.FlyProxy;
-
 /**
  * @Description
  * @Author xieweij
@@ -18,19 +15,19 @@ public class FlyTestStarter {
      */
     public static void main(String[] args){
 
-        //目标类
-        Bird target = new Bird();
+        //委托类
+        Bird bird = new Bird();
 
         //代理类
-        FlyProxy proxy = new FlyProxy(target);
-        FlyProxy proxy2 = new FlyProxy(new Flyable() {
-            @Override
-            public void fly() {
-                System.out.println("我是重写的");
-            }
-        });
+//        FlylogProxy p1 = new FlylogProxy(bird);
+//        FlyTimeProxy p2 = new FlyTimeProxy(p1);
+//
+//        p2.fly();
 
-        proxy.fly();
-        proxy2.fly();
+        //可调换顺序
+        FlyTimeProxy p1 = new FlyTimeProxy(bird);
+        FlylogProxy p2 = new FlylogProxy(p1);
+
+        p2.fly();
     }
 }

@@ -1,17 +1,15 @@
-package com.vg.basic.proxy.staticproxy.demo.impl;
-
-import com.vg.basic.proxy.staticproxy.demo.Flyable;
+package com.vg.basic.proxy.staticproxy.demo;
 
 /**
- * @Description 静态代理类
+ * @Description 代理类，记录飞行时间
  * @Author xieweij
  * @create 2020/5/8 14:11
  */
-public class FlyProxy implements Flyable {
+public class FlyTimeProxy implements Flyable {
 
     private Flyable flyable;
 
-    public FlyProxy(Flyable flyable){
+    public FlyTimeProxy(Flyable flyable){
         this.flyable = flyable;
     }
 
@@ -21,8 +19,9 @@ public class FlyProxy implements Flyable {
      */
     @Override
     public void fly() {
-        System.out.println("代理開始...");
+        long start = System.currentTimeMillis();
         this.flyable.fly();
-        System.out.println("开始結束...");
+        long end = System.currentTimeMillis();
+        System.out.println("Fly time = " + (end - start));
     }
 }

@@ -1,6 +1,4 @@
-package com.vg.basic.proxy.jdk.demo.impl;
-
-import com.vg.basic.proxy.jdk.demo.Car;
+package com.vg.basic.proxy.jdk.demo;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -33,21 +31,22 @@ public class CarProxyFactory {
 
 
     /**
-     * 维护一个目标对象
+     * 目标（委托）对象
      */
     private Car target;
+
     public CarProxyFactory(Car target){
         this.target = target;
     }
 
     /**
-     * 给目标对象生成代理对象
+     * 动态生成生成代理对象
      */
     public Object getProxyInstance(){
         return Proxy.newProxyInstance(
-                target.getClass().getClassLoader(),
-                target.getClass().getInterfaces(),
-                new InvocationHandler() {
+                target.getClass().getClassLoader(),/*类加载器*/
+                target.getClass().getInterfaces(),/*让代理对象和目标对象实现相同接口*/
+                new InvocationHandler() {/*代理对象的方法最终都会被JVM导向它的invoke方法*/
                     @Override
                     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
                         System.out.println("发动...");
