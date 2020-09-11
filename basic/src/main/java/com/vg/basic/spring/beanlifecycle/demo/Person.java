@@ -75,6 +75,14 @@ public class Person implements BeanNameAware, BeanFactoryAware,
     public void destroy() throws Exception {
         System.out.println("person bean生命周期：调用DisposableBean，销毁Bean。");
     }
+
+    /**
+     *测试 beanFactory 和 applicationContext 是否操作同一个容器
+     * */
+    public void isTheSameBean(){
+        System.out.println("applicationContext.getObject=" + this.beanFactory.getBean("person"));
+        System.out.println("applicationContext.getObject=" + this.applicationContext.getBean("person"));
+    }
 }
 
 
