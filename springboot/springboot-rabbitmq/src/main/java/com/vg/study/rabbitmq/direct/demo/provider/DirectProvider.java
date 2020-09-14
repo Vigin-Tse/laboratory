@@ -27,12 +27,12 @@ public class DirectProvider {
     public void sendDirectMessage(int sendTimes) {
         for (int i = 1; i <= sendTimes; i++) {
             String messageId = String.valueOf(String.valueOf(i));
-            String messageData = "test message, hello!";
+            String messageData = "我是消息-";
             String createTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
             Map<String, Object> message = new HashMap<>(1);
             message.put("id", messageId);
-            message.put("data", messageData);
+            message.put("data", messageData + i);
             message.put("time", createTime);
 
             rabbitTemplate.convertAndSend(DirectConfiguration.DEMO_DIRECT_EXCHANGE, DirectConfiguration.DIRECT_ROUTINGKEY, message);
