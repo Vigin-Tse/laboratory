@@ -1,0 +1,40 @@
+#日志
+logging:
+  level:
+    root: info
+
+#服务名、端口配置
+server:
+  port: 8080
+  servlet:
+    context-path : /sbm
+
+#数据库连接配置
+spring:
+  datasource:
+    username:
+    password:
+    url: jdbc:mysql://:3306/?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Hongkong&usessl=true&useOldAliasMetadataBehavior=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+#    druid: #如果使用 druid-springboot-starter 可在配置文件直接配置druid相关属性
+    initial-size: 1 #初始化连接大小
+    max-active: 10 #最大连接数
+    min-idle: 1   #最小空闲连接数
+    max-wait: 60000 #配置获取连接等待超时的时间(毫秒)
+    pool-prepared-statements: false #是否缓存PreparedStatement. PSCache对支持游标的数据库性能提升巨大，比如说oracle.在mysql下建议关闭.
+    max-pool-prepared-statement-per-connection-size: 20 #每个连接上PSCache的大小
+    validation-query: SELECT 'x' #用来检测连接是否有效的sql
+    validation-query-timeout: 10 #指定连接校验查询的超时时间
+    test-on-borrow: true #当从连接池借用连接时，是否测试该连接
+    test-on-return: false #在连接归还到连接池时是否测试该连接
+    test-while-idle: false #当连接空闲时，是否执行连接测试
+
+
+mybatis:
+  mapper-locations: classpath*:mapper/**/*Mapper.xml #映射文件的路径，支持ant风格的通配符，多个配置可以使用英文逗号隔开
+  type-handlers-package: com.vg.mybatis.**.handler #handler配置包扫描
+  configuration:
+    map-underscore-to-camel-case: true #自动将以下划线方式命名的数据库列映射到Java对象的驼峰命名属性中
+#  type-aliases-package: com.vg.mybatis.app.**.entity
+
