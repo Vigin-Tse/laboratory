@@ -54,7 +54,16 @@ public class WebSocketServer {
         this.userno = userno;
         this.session = session;
         webSocketSet.put(userno, this);
-        log("建立连接成功！");
+        while(true){
+            log("建立连接成功！当前在线人数为 " + webSocketSet.size() + "人");
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     /**
@@ -65,11 +74,12 @@ public class WebSocketServer {
      */
     @OnClose
     public void onClose() {
-        System.out.println("调用onClose");
+        log("调用onClose");
         if (!StringUtils.isEmpty(this.userno)){
             if (webSocketSet.get(userno) != null){
                 webSocketSet.remove(userno);
                 System.out.println("连接关闭：" + userno);
+                log("建立连接成功！当前在线人数为 " + webSocketSet.size() + "人");
             }
         }
     }
@@ -81,24 +91,13 @@ public class WebSocketServer {
      */
     @OnMessage
     public void onMessage(String message){
-//        if (!StringUtils.isEmpty(userno) && webSocketSet.get(userno) != null && webSocketSet.get(userno).session != null){
-//            webSocketSet.get(userno).session.getAsyncRemote().sendText("服务器响应：" + userno + "，你好！");
-//        }
         System.out.println("进入OnMessage");
 
-            new Thread(() ->{
-                System.out.println("进入线程");
-                while (!StringUtils.isEmpty(userno) && webSocketSet.get(userno) != null){
-//                webSocketSet.get(userno).session.getAsyncRemote().sendText("服务器响应：" + userno + "，你好！");
-                    try {
-                        webSocketSet.get(userno).session.getBasicRemote().sendText("服务器响应：" + userno + "，你好！");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                System.out.println("退出线程");
-            }).run();
-
+        try {
+            webSocketSet.get(userno).session.getBasicRemote().sendText("服务器响应：" + userno + "，你好！");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         System.out.println("退出OnMessage");
     }
 
