@@ -3,9 +3,9 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.vg.mybatis.app.demo.dao.mapper.SysUserMapper">
+<mapper namespace="com.vg.mybatis.app.dao.mapper.SysUserMapper">
 
-    <select id="getById" resultType="com.vg.mybatis.app.demo.dao.model.SysUserModel">
+    <select id="getById" resultType="com.vg.mybatis.app.dao.model.SysUserModel">
         select * from sys_user where id = #{id}
     </select>
 

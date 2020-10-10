@@ -1,6 +1,6 @@
-package com.vg.mybatis.app.demo.dao.mapper;
+package com.vg.mybatis.app.dao.mapper;
 
-import com.vg.mybatis.app.demo.dao.model.SysUserModel;
+import com.vg.mybatis.app.dao.model.SysUserModel;
 
 public interface SysUserMapper {
 

@@ -1,8 +1,8 @@
 package com.vg.mybatis.demo;
 
 import com.alibaba.fastjson.JSON;
-import com.vg.mybatis.app.demo.dao.mapper.BizAccountMapper;
-import com.vg.mybatis.app.demo.dao.model.BizAccountModel;
+import com.vg.mybatis.app.dao.mapper.BizAccountMapper;
+import com.vg.mybatis.app.dao.model.BizAccountModel;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

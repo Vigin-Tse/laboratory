@@ -1,6 +1,6 @@
-package com.vg.mybatis.app.demo.dao.mapper;
+package com.vg.mybatis.app.dao.mapper;
 
-import com.vg.mybatis.app.demo.dao.model.BizAccountModel;
+import com.vg.mybatis.app.dao.model.BizAccountModel;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
