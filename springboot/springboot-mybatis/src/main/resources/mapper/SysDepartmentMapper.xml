@@ -4,4 +4,63 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.vg.mybatis.app.dao.mapper.SysDepartmentMapper">
+
+    <resultMap id="oneToOneItem" type="com.vg.mybatis.app.dao.item.UserDepartmentQueryItem">
+        <id property="id" column="id"/>
+        <result property="userName" column="user_name"/>
+        <result property="age" column="age"/>
+        <association property="department" javaType="com.vg.mybatis.app.dao.model.SysDepartmentModel">
+            <id property="id" column="dept_id"/>
+            <result property="deptName" column="dept_name"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="manyItem" type="com.vg.mybatis.app.dao.item.DepartmentUserQueryItem">
+        <id property="id" column="id"/>
+        <result property="deptName" column="dept_name"/>
+        <collection property="users" ofType="com.vg.mybatis.app.dao.model.SysUserModel">
+            <id property="id" column="user_id"/>
+            <result property="userName" column="user_name"/>
+            <result property="age" column="age"/>
+        </collection>
+    </resultMap>
+
+    <select id="oneToOneQuery" resultMap="oneToOneItem">
+        SELECT
+        u.id,
+        u.dept_id,
+        u.user_name,
+        u.age,
+        d.id,
+        d.dept_name
+        FROM sys_user u
+        LEFT JOIN sys_department d ON d.id = u.dept_id
+        WHERE 1=1
+        AND u.id = #{userId}
+    </select>
+
+    <select id="oneToManyQuery" resultMap="manyItem">
+        SELECT
+        u.id as user_id,
+        u.user_name,
+        u.age,
+        d.id,
+        d.dept_name
+        FROM sys_department d
+        LEFT JOIN sys_user u ON d.id = u.dept_id
+        WHERE 1=1
+        AND d.id = #{deptId}
+    </select>
+
+    <select id="manyToManyQuery" resultMap="manyItem">
+        SELECT
+        u.id as user_id,
+        u.user_name,
+        u.age,
+        d.id,
+        d.dept_name
+        FROM sys_department d
+        LEFT JOIN sys_user u ON d.id = u.dept_id
+        WHERE 1=1
+    </select>
 </mapper>

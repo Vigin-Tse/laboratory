@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 public class MybatisConfig {
 
     /**
-     * 编程式设置mapperscanner 扫描Mapper接口
+     * 编程式设置mapperscanner 扫描Mapper接口（可以在mapper接口上使用@Mapper注解告知spring ioc自动注册Bean）
      * @return
      */
     @Bean

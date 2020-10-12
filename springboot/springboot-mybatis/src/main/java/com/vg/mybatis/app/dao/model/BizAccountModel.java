@@ -3,8 +3,8 @@ package com.vg.mybatis.app.dao.model;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 public class BizAccountModel {
 
     private Integer id;

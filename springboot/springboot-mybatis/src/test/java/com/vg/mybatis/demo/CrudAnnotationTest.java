@@ -9,8 +9,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import javax.annotation.Resource;
 import java.util.List;
 
+/**
+ * @description: 测试使用注解的方式（不需要写xml文件）进行crud
+ * @author: xieweij
+ * @create: 2020-10-12 13:47
+ **/
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class AccountTest {
+public class CrudAnnotationTest {
 
     @Resource
     private BizAccountMapper accountMapper;

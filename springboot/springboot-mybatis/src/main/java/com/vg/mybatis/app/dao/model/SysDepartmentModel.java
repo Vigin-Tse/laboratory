@@ -10,9 +10,9 @@ import lombok.Setter;
  **/
 @Setter
 @Getter
-public class SysDepartment {
+public class SysDepartmentModel {
 
     private Integer id;
 
-    private String departmentName;
+    private String deptName;
 }
