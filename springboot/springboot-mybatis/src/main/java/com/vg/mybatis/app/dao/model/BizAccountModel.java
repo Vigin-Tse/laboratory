@@ -12,4 +12,6 @@ public class BizAccountModel {
     private Integer userId;
 
     private Double accountBalance;
+
+    private Integer version;
 }

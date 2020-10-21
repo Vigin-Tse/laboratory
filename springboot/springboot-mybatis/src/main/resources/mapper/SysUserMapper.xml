@@ -10,16 +10,25 @@
     </select>
 
     <insert id="insertUser">
-        insert into sys_user (id, name, age)
-        values (#{id}, #{name}, #{age})
+        insert into sys_user (id, dept_id, user_name, age)
+        values (#{user.id}, #{user.deptId}, #{user.userName}, #{user.age})
     </insert>
     
-    <update id = "updateUser">
-        update sys_user set name = #{name}, age = #{age} where id = #{id}
+    <update id = "updateUserNoVersion">
+        update sys_user set
+                user_name = #{user.userName},
+                age = #{user.age},
+                dept_id = #{user.deptId}
+        where id = #{user.id}
     </update>
 
-    <insert id="insertUserByName">
-        insert into sys_user (name, age)
-        values (#{name}, #{age})
-    </insert>
+    <update id = "updateUserWhitVersion">
+        update sys_user set
+                user_name = #{user.userName},
+                age = #{user.age},
+                dept_id = #{user.deptId},
+                version = #{user.version}
+        where id = #{user.id}
+    </update>
+
 </mapper>

@@ -1,15 +1,16 @@
 package com.vg.mybatis.app.dao.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.vg.mybatis.app.dao.model.SysUserModel;
+import org.apache.ibatis.annotations.Param;
 
-public interface SysUserMapper {
+public interface SysUserMapper extends BaseMapper<SysUserModel> {
 
-    public void insertUser(SysUserModel user);
-    
-    public SysUserModel getById(Integer id);
-    
-    public void updateUser(SysUserModel user);
+    SysUserModel getById(Integer id);
 
-    public void insertUserByName(SysUserModel user);
-    
+    void insertUser(@Param("user") SysUserModel user);
+
+    void updateUserNoVersion(@Param("user")SysUserModel user);
+
+    void updateUserWhitVersion(@Param("user")SysUserModel user);
 }

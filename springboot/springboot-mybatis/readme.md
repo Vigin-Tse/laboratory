@@ -166,3 +166,7 @@ spring.datasource.validator-class-name用来测试查询的validator全限定名
 spring.datasource.xa.data-source-class-name指定数据源的全限定名.
 
 spring.datasource.xa.properties指定传递给XA data source的属性
+
+
+#Mybatis-Plus
+https://blog.csdn.net/qq_38534887/article/details/108844378?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.edu_weight&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.edu_weight

@@ -30,11 +30,26 @@ spring:
     test-on-return: false #在连接归还到连接池时是否测试该连接
     test-while-idle: false #当连接空闲时，是否执行连接测试
 
-
-mybatis:
-  mapper-locations: classpath*:mapper/**/*Mapper.xml #映射文件的路径，支持ant风格的通配符，多个配置可以使用英文逗号隔开
-  type-handlers-package: com.vg.mybatis.**.handler #handler配置包扫描
-  configuration:
-    map-underscore-to-camel-case: true #自动将以下划线方式命名的数据库列映射到Java对象的驼峰命名属性中
+# spring-boot-mybatis 配置
+#mybatis:
+#  mapper-locations: classpath*:mapper/**/*Mapper.xml #映射文件的路径，支持ant风格的通配符，多个配置可以使用英文逗号隔开
+#  type-handlers-package: com.vg.mybatis.**.handler #handler配置包扫描
+#  configuration:
+#    map-underscore-to-camel-case: true #自动将以下划线方式命名的数据库列映射到Java对象的驼峰命名属性中
 #  type-aliases-package: com.vg.mybatis.app.**.entity
 
+# mybatis-plus 配置
+mybatis-plus:
+  mapper-locations: classpath*:mapper/**/*Mapper.xml #映射文件的路径，支持ant风格的通配符，多个配置可以使用英文逗号隔开
+  type-handlers-package: com.vg.mybatis.**.handler #handler配置包扫描
+  global-config:
+#   db-config:
+#    id-type: auto
+    field-strategy: not_empty
+#    column-underline: true #驼峰下划线转换
+#    logic-delete-value: 0 #逻辑删除配置
+#    logic-not-delete-value: 1
+  configuration:
+    map-underscore-to-camel-case: true #自动将以下划线方式命名的数据库列映射到Java对象的驼峰命名属性中
+#    call-setters-on-nulls: true # 如果查询结果中包含空值的列，则 MyBatis 在映射的时候，不会映射这个字段
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #查看执行的 sql 语句
