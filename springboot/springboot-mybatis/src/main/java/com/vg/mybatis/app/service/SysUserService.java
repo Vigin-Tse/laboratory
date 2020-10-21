@@ -18,4 +18,6 @@ public interface SysUserService {
     void deleteUser(Integer userId);
 
     List<SysUserModel> queryUsers(List<Integer> userIds);
+
+    void testAddUserTransactional();
 }
