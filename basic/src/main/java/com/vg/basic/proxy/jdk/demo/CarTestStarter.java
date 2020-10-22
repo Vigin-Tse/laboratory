@@ -10,6 +10,10 @@ public class CarTestStarter {
     /**
      * 动态代理总结：
      * 　　代理对象不需要实现接口,但是目标（委托）对象一定要实现接口,否则不能用动态代理。
+     *     1.创建动态代理的接口（抽象类）和类
+     *     2.创建实现了InvocationHandler接口的程序处理器类，对目标接口中的所有方法统一处理
+     *     3.调用Proxy的静态方法newProxyInstance创建并生成相应的代理对象
+     *     4.使用代理类
      * @param args
      */
     public static void main(String[] args){

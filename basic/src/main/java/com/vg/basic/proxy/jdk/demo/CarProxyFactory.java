@@ -33,9 +33,9 @@ public class CarProxyFactory {
     /**
      * 目标（委托）对象
      */
-    private Bus target;
+    private Object target;
 
-    public CarProxyFactory(Bus target){
+    public CarProxyFactory(Object target){
         this.target = target;
     }
 
