@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.vg.study</groupId>
-    <artifactId>springboot-rabbitmq</artifactId>
+    <artifactId>rabbitmq</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>springboot-rabbitmq</name>
+    <name>rabbitmq</name>
     <description>rabbitmq project for Spring Boot</description>
 
     <properties>
