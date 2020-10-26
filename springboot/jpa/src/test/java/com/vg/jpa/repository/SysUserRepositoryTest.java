@@ -6,6 +6,7 @@ import com.vg.jpa.domain.model.SysUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Example;
 
 import java.util.List;
 import java.util.Map;
@@ -22,11 +23,30 @@ public class SysUserRepositoryTest {
     @Autowired
     private SysUserRepository userRepository;
 
+    /**
+     * 报错：getOne遇到延迟加载，session关闭了，导致不能得到有效信息。
+     */
+    @Test
+    public void getOne(){
+        SysUser user = this.userRepository.getOne(1);
+        System.out.println(JSON.toJSONString(user));
+    }
+
     @Test
     public void findById(){
         Optional<SysUser> oUser = this.userRepository.findById(1);
         SysUser user = oUser.get();
         System.out.println(JSON.toJSONString(user));
+    }
+
+    @Test
+    public void findAllByExample(){
+        SysUser userExample = new SysUser();
+        userExample.setDeptId(2);
+
+        Example<SysUser> example = Example.of(userExample);
+        List<SysUser> list = this.userRepository.findAll(example);
+        System.out.println(JSON.toJSONString(list));
     }
 
     @Test
