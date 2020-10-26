@@ -71,7 +71,13 @@ public class SysUserRepositoryTest {
 
     @Test
     public void userDepatQueryByJpql(){
-        Optional<List<UserDepartmentEntity>> entities = this.userRepository.getAllUserDepatByJpql();
-        System.out.println(JSON.toJSONString(entities.get()));
+        List<Optional<UserDepartmentEntity>> entities = this.userRepository.getAllUserDepatByJpql();
+        System.out.println(JSON.toJSONString(entities));
+    }
+
+    @Test
+    public void userDepatQueryByJpql2(){
+        Optional<UserDepartmentEntity> entity = this.userRepository.getUserDepatByJpql(1);
+        System.out.println(JSON.toJSONString(entity));
     }
 }
