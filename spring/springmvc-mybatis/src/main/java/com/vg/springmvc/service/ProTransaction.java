@@ -28,10 +28,6 @@ public class ProTransaction {
     @Autowired
     private DataSourceTransactionManager dataSourceTransactionManager;
 
-    //spring事务默认配置
-//    @Autowired
-//    private DefaultTransactionDefinition transactionDefinition;
-
 
     @Autowired
     private DataSource dataSource;
@@ -39,10 +35,11 @@ public class ProTransaction {
     /**
      * 编程式事物提交
      */
-//    @Transactional
     public void inserUser(){
+
         DefaultTransactionDefinition transactionDefinition = new DefaultTransactionDefinition();
         transactionDefinition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+
         TransactionStatus transactionStatus = dataSourceTransactionManager.getTransaction(transactionDefinition);
 
         try {
