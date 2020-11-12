@@ -1,4 +1,4 @@
-package com.vg.basic.design.prototype;
+package com.vg.basic.design.prototype.shollow;
 
 import lombok.Getter;
 import lombok.Setter;

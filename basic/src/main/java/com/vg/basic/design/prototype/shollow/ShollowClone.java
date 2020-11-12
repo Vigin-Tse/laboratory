@@ -1,4 +1,4 @@
-package com.vg.basic.design.prototype;
+package com.vg.basic.design.prototype.shollow;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -34,6 +34,7 @@ public class ShollowClone implements Cloneable {
         this.address = address;
     }
 
+    @Override
     public ShollowClone clone() throws CloneNotSupportedException{
         System.out.println("peter被复制了");
         return (ShollowClone) super.clone();
