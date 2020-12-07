@@ -33,7 +33,7 @@ public class RedisSycByJedis {
     public void buyTicketByLock() throws InterruptedException {
         redisLockService.buy();
 
-        Thread.sleep(5000);
+        Thread.sleep(10000);
 
         System.out.println("票存:" + redisLockService.ticketCount);
     }

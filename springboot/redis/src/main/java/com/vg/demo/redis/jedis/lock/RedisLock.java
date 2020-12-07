@@ -53,8 +53,7 @@ public class RedisLock {
             }
             //加锁失败，休眠1s，再尝试获取锁
             if (!islock) {
-                System.out.println(Thread.currentThread() + "加锁失败，休眠1s");
-                Thread.sleep(1000);
+                System.out.println(Thread.currentThread() + "加锁失败");
             }
         }
         return true;
@@ -68,7 +67,8 @@ public class RedisLock {
     private boolean tryLock() {
         Jedis jedis = this.getJedis();
         String value = UUID.randomUUID().toString();
-        String result = jedis.set(redisLockKey, value, "NX", "EX", 2);
+        // NX是不存在时才set， XX是存在时才set， EX是秒，PX是毫秒
+        String result = jedis.set(redisLockKey, value, "NX", "PX", 500);
         if (!StringUtils.isEmpty(result) && "OK".equals(result)) {
             //加锁成功，保存线程副本value值，方便同一线程解锁时认证锁的持有人（value）
             tl.set(value);
@@ -97,4 +97,6 @@ public class RedisLock {
         Long result = (Long) jedis.eval(luaScript, keys, argv);
         System.out.println(Thread.currentThread() + "解锁结果：" + result);
     }
+
+    //TODO 持有锁的客户端应该检查锁是否过期，保证锁在业务执行完释放之前不会过期
 }

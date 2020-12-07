@@ -15,7 +15,7 @@ public class RedisLockService {
     @Autowired
     private RedisLock lock;
 
-    public int ticketCount = 10;
+    public volatile int ticketCount = 10;
 
     public void buy() {
         new Thread(() -> {
@@ -30,23 +30,23 @@ public class RedisLockService {
     }
 
     private void ticktSub() {
-        try {
-            if (lock.lock()) {
-                System.out.println(Thread.currentThread() + "此时：" + ticketCount);
-                while (ticketCount > 0) {
-                    System.out.println(Thread.currentThread() + "票号---" + ticketCount);
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+        while (ticketCount > 0) {
+            try {
+                if (lock.lock()) {
+
+                    //TODO 如果业务逻辑执行时间过长，要考虑redis锁时间失效
+                    //...
+
+                    //此if判断防止redis锁时间超时，导致其他线程获取了锁，库存已经<=0
+                    if (ticketCount > 0) {
+                        System.out.println(Thread.currentThread() + "：抢得票号：" + ticketCount + "，余票---" + --ticketCount);
                     }
-                    System.out.println(Thread.currentThread() + "买完之后的库存---" + --ticketCount);
                 }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                lock.unlock();
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } finally {
-            lock.unlock();
         }
     }
 
