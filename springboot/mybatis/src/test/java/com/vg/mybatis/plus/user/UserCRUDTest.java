@@ -2,9 +2,11 @@ package com.vg.mybatis.plus.user;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.vg.mybatis.app.dao.mapper.SysUserMapper;
 import com.vg.mybatis.app.dao.model.SysUserModel;
+import com.vg.mybatis.app.iservice.SysUserIService;
 import com.vg.mybatis.app.service.SysUserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,9 @@ public class UserCRUDTest {
 
     @Autowired
     public SysUserService userService;
+
+    @Autowired
+    public SysUserIService sysUserIService;
 
     /**
      * 查询
@@ -72,6 +77,7 @@ public class UserCRUDTest {
 
         this.userMapper.insert(u1);
     }
+
 
     /**
      * 更新
