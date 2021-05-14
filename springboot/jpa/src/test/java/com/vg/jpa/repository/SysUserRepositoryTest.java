@@ -34,8 +34,8 @@ public class SysUserRepositoryTest {
 
     @Test
     public void findById(){
-        Optional<SysUser> oUser = this.userRepository.findById(1);
-        SysUser user = oUser.get();
+        Optional<SysUser> oUser = this.userRepository.findById(100);
+        SysUser user = oUser.orElse(null);
         System.out.println(JSON.toJSONString(user));
     }
 

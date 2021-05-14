@@ -12,10 +12,12 @@ server:
 
 #数据库连接配置
 spring:
+  profiles:
+    active: sit
   datasource:
-    username:
-    password:
-    url: jdbc:mysql://:3306/xieweijinDB?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Hongkong&usessl=true&useOldAliasMetadataBehavior=true
+    username: ${sct.db.username}
+    password: ${sct.db.password}
+    url: jdbc:mysql://${sct.db.address}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Hongkong&usessl=true&useOldAliasMetadataBehavior=true
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     druid: #如果使用 druid-springboot-starter 可在配置文件直接配置druid相关属性
