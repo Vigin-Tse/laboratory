@@ -22,6 +22,8 @@
         <module>mybatis</module>
         <module>jpa</module>
         <module>dubbo</module>
+        <module>redis</module>
+        <module>task</module>
     </modules>
     <properties>
         <java.version>1.8</java.version>
