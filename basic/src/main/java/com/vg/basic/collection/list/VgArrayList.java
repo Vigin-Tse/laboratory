@@ -276,11 +276,12 @@ public class VgArrayList<E>
         //获取数组现有容量
         int oldCapacity = elementData.length;
 
-        //数组扩容为现有1.5倍
+        //num>>n:相当于num/（2的n次方），算数右移
+        //num<< n:相当于 num×(2的n次方)，算数左移（逻辑左移）
+        //数组扩容为现有1.5倍，
         int newCapacity = oldCapacity + (oldCapacity >> 1);
 
-
-        if (newCapacity < oldCapacity){
+        if (newCapacity < minCapacity){
             newCapacity = minCapacity;
         }
 
@@ -294,6 +295,12 @@ public class VgArrayList<E>
         }
         //原有数组复制至（扩容后的）新数组
         elementData = Arrays.copyOf(elementData, newCapacity);
+    }
+
+    public static void main(String[] args){
+
+        System.out.println(Integer.MAX_VALUE);
+        System.out.println(Integer.MAX_VALUE+2);
     }
 
     /**
