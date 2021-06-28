@@ -115,6 +115,39 @@ INSERT INTO sql_lock (`id`, `code`, `name`, `age`, `create_time`) VALUES (17, 'i
 ---执行成功
 INSERT INTO sql_lock (`id`, `code`, `name`, `age`, `create_time`) VALUES (20, 'insert-20', '主键=20', '1', '2021-01-22 15:00:03'); 
 
+
+=======================================================================
+-- INSERT INTO sql_lock (`id`, `code`, `name`, role, phone, `age`, `create_time`) VALUES (26, 'insert-06251041', '插入-06251041', 'm', '456', '15', '2021-06-25 10:41:03');
+--执行失败
+UPDATE sql_lock SET age = 21 WHERE age < 16;
+
+--执行失败
+UPDATE sql_lock SET age = 21 WHERE age = 16;
+
+--执行失败
+UPDATE sql_lock SET role = 'm' WHERE role = 'm';
+
+--成功
+UPDATE sql_lock SET role = 'f' WHERE role = 'f';
+
+
+-- UPDATE sql_lock SET role = 'f' WHERE role = 'f';
+--执行失败
+UPDATE sql_lock SET role = 'f' WHERE role = 'f';
+
+--执行失败
+explain
+UPDATE sql_lock SET role = 'm' WHERE role <> 'f';
+
+--执行失败
+UPDATE sql_lock SET role = 'm' WHERE role IS NOT NULL;
+
+--成功
+explain
+UPDATE sql_lock SET role = 'm' WHERE role = 'm';
+
+--成功
+UPDATE sql_lock SET role = 'm' WHERE role IS NULL;
 ```
 
 **总结：**
