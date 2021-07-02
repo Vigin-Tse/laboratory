@@ -1,0 +1,9 @@
+sct:
+  db:
+    address: 47.106.105.217/xieweijinDB
+    username: xieweijin
+    password: xieweijin
+  redis:
+    host: 47.106.105.217
+    port: 9004
+    password: Vigin123
