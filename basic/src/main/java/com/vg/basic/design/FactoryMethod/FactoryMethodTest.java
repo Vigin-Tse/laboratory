@@ -27,5 +27,6 @@ public class FactoryMethodTest {
         factory = new MiTvFactory();
         tv = factory.createTv();
         tv.TvInfo();
+
     }
 }
