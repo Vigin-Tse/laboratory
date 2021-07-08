@@ -7,6 +7,7 @@ package com.vg.basic.string;
 public class StringPoolDemo {
 
 
+
     public void case01(){
 
         String s1 = new String("case01");
