@@ -1,6 +1,0 @@
-Docker文档:https://docs.docker.com/
-Docker的windows安装步骤：https://docs.docker.com/docker-for-windows/install/
-Docker的linux安装步骤：https://docs.docker.com/install/linux/docker-ce/ubuntu/
-Docker官方创建的images: https://github.com/docker-library/official-images
-Docker常用命令解析：https://www.cnblogs.com/DeepInThought/p/10896790.html
-		  https://blog.csdn.net/wangmx1993328/article/details/81735070
