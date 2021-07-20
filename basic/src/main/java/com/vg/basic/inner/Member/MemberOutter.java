@@ -1,12 +1,5 @@
 package com.vg.basic.inner.Member;
 
-import com.vg.basic.proxy.jdk.demo.Car;
-import com.vg.basic.string.StringPoolDemo;
-import com.vg.basic.temp.Finterface;
-
-import java.lang.reflect.Member;
-import java.util.List;
-
 /**
  * @Description 成员内部类，成员内部类是最普通的内部类，它的定义为位于另一个类的内部
  * @Author xieweij
