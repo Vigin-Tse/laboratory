@@ -2,7 +2,12 @@ package com.vg.basic.design.structure.adapter.objAdapter;
 
 //客户端代码
 class ObjAdapterDemo {
-    public static void main(String[] args){}
+    public static void main(String[] args){
+        ObjAdaptee adaptee = new ObjAdaptee();
+
+        ObjTarget target = new ObjAdapter(adaptee);
+        target.request();
+    }
 }
 
 //目标接口
