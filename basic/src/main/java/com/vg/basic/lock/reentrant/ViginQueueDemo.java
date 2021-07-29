@@ -36,28 +36,23 @@ public class ViginQueueDemo {
         new Thread() {
             @Override
             public void run() {
-                for (int i = 0; i < 2; i++) {
-                    bb.put("x" + i);
-                }
-                System.out.println("元素添加完成");
+                bb.put("x" + 1);
+
                 try {
-                    Thread.sleep(5000L);
+                    Thread.sleep(3000L);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                System.out.println("没有死锁");
-                bb.put("x" + 3);
             }
         }.start();
 
 
 
-        Thread.sleep(2000L);
+        Thread.sleep(1000L);
         System.out.println("开始从队列中取元素...");
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             bb.take();
-//            Thread.sleep(3000L);
         }
     }
 }
@@ -90,12 +85,13 @@ class ViginQueue{
             for(;;){
                 if (list.size() < length){
                     list.add(obj);
-                    System.out.println("put:" + obj);
                     takeCondition.signal();
                     System.out.println("put:" + obj + ":takeCondition.signal()");
                     break;
                 }else{
+                    System.out.println("putCondition.await()-before");
                     putCondition.await();
+                    System.out.println("putCondition.await()-after");
                 }
             }
         }catch (InterruptedException e) {
@@ -113,13 +109,14 @@ class ViginQueue{
                 if (list.size() > 0) {
                     obj = list.get(0);
                     list.remove(0);
-                    System.out.println("take：" + obj);
-
                     putCondition.signal();
+                    System.out.println("take：" + obj + "putCondition.signal()");
                     break;
                 } else {
+                    System.out.println("takeCondition.await()-before");
                     takeCondition.await();
-                    System.out.println("takeCondition.await()");
+                    System.out.println("takeCondition.await()-after");
+
                 }
             }
         } catch (InterruptedException e) {
