@@ -1,6 +1,7 @@
 package com.vg.basic.design.behavior.strategy;
 
-/** 策略模式
+/**
+ * 策略模式
  * @author: xieweij
  * @time: 2021/7/26 10:37
  */
