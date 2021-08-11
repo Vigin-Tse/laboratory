@@ -374,7 +374,7 @@ public class HashMap<K,V>
      */
     static int indexFor(int h, int length) {
         // assert Integer.bitCount(length) == 1 : "length must be a non-zero power of 2";
-        return h & (length-1);
+        return h & (length-1); //取模，等价 h%length（公式：X % 2^n = X & (2^n – 1)）,位运算(&)效率要比代替取模运算(%)高很多，主要原因是位运算直接对内存数据进行操作，不需要转成十进制，因此处理速度非常快。
     }
 
     /**
@@ -486,12 +486,12 @@ public class HashMap<K,V>
      */
     public V put(K key, V value) {
         if (table == EMPTY_TABLE) {
-            inflateTable(threshold);
+            inflateTable(threshold); //初始化表
         }
         if (key == null)
             return putForNullKey(value);
-        int hash = hash(key);
-        int i = indexFor(hash, table.length);
+        int hash = hash(key);  //计算hash值
+        int i = indexFor(hash, table.length); //根据hash值计算出下标
         for (Entry<K,V> e = table[i]; e != null; e = e.next) {
             Object k;
             if (e.hash == hash && ((k = e.key) == key || key.equals(k))) {
