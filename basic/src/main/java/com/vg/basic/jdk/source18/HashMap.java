@@ -626,19 +626,19 @@ public class HashMap<K,V> extends AbstractMap<K,V>
     final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
                    boolean evict) {
         Node<K,V>[] tab; Node<K,V> p; int n, i;
-        if ((tab = table) == null || (n = tab.length) == 0)
-            n = (tab = resize()).length;
-        if ((p = tab[i = (n - 1) & hash]) == null)
-            tab[i] = newNode(hash, key, value, null);
-        else {
+        if ((tab = table) == null || (n = tab.length) == 0)  //若table为null
+            n = (tab = resize()).length;                     //resize
+        if ((p = tab[i = (n - 1) & hash]) == null)           //计算下标i，获取i处的元素为p，如果p为空
+            tab[i] = newNode(hash, key, value, null);  //创建新的node，放到数组
+        else {  //如果p ！= null
             Node<K,V> e; K k;
             if (p.hash == hash &&
-                ((k = p.key) == key || (key != null && key.equals(k))))
+                ((k = p.key) == key || (key != null && key.equals(k)))) //若key相同
                 e = p;
-            else if (p instanceof TreeNode)
-                e = ((TreeNode<K,V>)p).putTreeVal(this, tab, hash, key, value);
-            else {
-                for (int binCount = 0; ; ++binCount) {
+            else if (p instanceof TreeNode)  //如果为 树节点
+                e = ((TreeNode<K,V>)p).putTreeVal(this, tab, hash, key, value); //放到树中
+            else { //如果key不相同，也不是treeNode
+                for (int binCount = 0; ; ++binCount) { //遍历
                     if ((e = p.next) == null) {
                         p.next = newNode(hash, key, value, null);
                         if (binCount >= TREEIFY_THRESHOLD - 1) // -1 for 1st
@@ -685,7 +685,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
                 threshold = Integer.MAX_VALUE;
                 return oldTab;
             }
-            else if ((newCap = oldCap << 1) < MAXIMUM_CAPACITY &&
+            else if ((newCap = oldCap << 1) < MAXIMUM_CAPACITY &&  //新容量为原来的2倍
                      oldCap >= DEFAULT_INITIAL_CAPACITY)
                 newThr = oldThr << 1; // double threshold
         }

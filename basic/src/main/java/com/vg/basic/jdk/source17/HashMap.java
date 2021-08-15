@@ -140,6 +140,7 @@ public class HashMap<K,V>
     static final int MAXIMUM_CAPACITY = 1 << 30;
 
     /**
+     * 默认负载因子
      * The load factor used when none specified in constructor.
      */
     static final float DEFAULT_LOAD_FACTOR = 0.75f;
@@ -155,21 +156,27 @@ public class HashMap<K,V>
     transient Entry<K,V>[] table = (Entry<K,V>[]) EMPTY_TABLE;
 
     /**
+     * 集合map的元素数量
      * The number of key-value mappings contained in this map.
      */
     transient int size;
 
     /**
+     * 扩容的阈值
+     * 初始构造方法可传入,如果不传,默认会构造成16.
+     * 在第一次的put的时候会重新赋值为下次扩容的容量临界值. 比如初始数组大小为16 ,负载因子为0.75,那么扩容临界值就为12.
+     *
+     * 要调整大小的下一个大小值(容量*负载因子)。
      * The next size value at which to resize (capacity * load factor).
      * @serial
      */
-    // If table == EMPTY_TABLE then this is the initial capacity at which the
-    // table will be created when inflated.
+    // 如果table == EMPTY_TABLE，则这是初始容量
+    // table will be created when inflated. 表将在膨胀时创建。
     int threshold;
 
     /**
+     * 负载因子,默认是0.75,可以通过构造函数进行修改,不建议修改.该值是经过数学运算得出的最适合扩容的一个值.
      * The load factor for the hash table.
-     *
      * @serial
      */
     final float loadFactor;
@@ -233,6 +240,7 @@ public class HashMap<K,V>
     }
 
     /**
+     * 应用于的与此实例关联的随机值键的哈希代码，使哈希冲突更难找到。如果0禁用替代哈希。
      * A randomizing value associated with this instance that is applied to
      * hash code of keys to make hash collisions harder to find. If 0 then
      * alternative hashing is disabled.
@@ -252,18 +260,21 @@ public class HashMap<K,V>
         if (initialCapacity < 0)
             throw new IllegalArgumentException("Illegal initial capacity: " +
                                                initialCapacity);
-        if (initialCapacity > MAXIMUM_CAPACITY)
+        if (initialCapacity > MAXIMUM_CAPACITY) //检查最大容量
             initialCapacity = MAXIMUM_CAPACITY;
-        if (loadFactor <= 0 || Float.isNaN(loadFactor))
+        if (loadFactor <= 0 || Float.isNaN(loadFactor)) //检查 loadFactor
             throw new IllegalArgumentException("Illegal load factor: " +
                                                loadFactor);
 
-        this.loadFactor = loadFactor;
-        threshold = initialCapacity;
+        this.loadFactor = loadFactor;  //记录下loadFactor
+        threshold = initialCapacity;   //初始化threshold = initialCapacity = 16
         init();
     }
 
     /**
+     *
+     * 指定数组长度，负载因子默认0.75
+     *
      * Constructs an empty <tt>HashMap</tt> with the specified initial
      * capacity and the default load factor (0.75).
      *
@@ -275,6 +286,7 @@ public class HashMap<K,V>
     }
 
     /**
+     * 无参构造函数，默认数组长度为16，负载因子为0.75
      * Constructs an empty <tt>HashMap</tt> with the default initial capacity
      * (16) and the default load factor (0.75).
      */
@@ -473,16 +485,13 @@ public class HashMap<K,V>
     }
 
     /**
-     * Associates the specified value with the specified key in this map.
-     * If the map previously contained a mapping for the key, the old
-     * value is replaced.
+     * 将此映射中的指定值与指定键关联。
+     * 如果先前的映射包含一个键的映射，则旧的value被替换。
      *
      * @param key key with which the specified value is to be associated
      * @param value value to be associated with the specified key
-     * @return the previous value associated with <tt>key</tt>, or
-     *         <tt>null</tt> if there was no mapping for <tt>key</tt>.
-     *         (A <tt>null</tt> return can also indicate that the map
-     *         previously associated <tt>null</tt> with <tt>key</tt>.)
+     * @return 与键关联的前一个值，或 null如果没有映射键。
+     *          (A null return也可以表示该映射先前关联null with key.)
      */
     public V put(K key, V value) {
         if (table == EMPTY_TABLE) {
@@ -490,20 +499,20 @@ public class HashMap<K,V>
         }
         if (key == null)
             return putForNullKey(value);
-        int hash = hash(key);  //计算hash值
+        int hash = hash(key);  //计算key的hash值
         int i = indexFor(hash, table.length); //根据hash值计算出下标
-        for (Entry<K,V> e = table[i]; e != null; e = e.next) {
+        for (Entry<K,V> e = table[i]; e != null; e = e.next) {//遍历下标为i的链表
             Object k;
-            if (e.hash == hash && ((k = e.key) == key || key.equals(k))) {
+            if (e.hash == hash && ((k = e.key) == key || key.equals(k))) { //如果插入的位置已经存在元素（插入的key已经存在），则替换为新元素
                 V oldValue = e.value;
-                e.value = value;
+                e.value = value; //新值 覆盖 旧值
                 e.recordAccess(this);
-                return oldValue;
+                return oldValue; //返回旧值
             }
         }
 
-        modCount++;
-        addEntry(hash, key, value, i);
+        modCount++;  //修改次数+1，类似version number
+        addEntry(hash, key, value, i); //插入的（新）key不存在，则在对应数组下标位置以链表的形式追加新元素
         return null;
     }
 
@@ -557,10 +566,13 @@ public class HashMap<K,V>
     }
 
     /**
+     * 将此映射的内容重新散列到一个新数组中大容量。方法时自动调用此方法此地图中的键数达到其阈值。
      * Rehashes the contents of this map into a new array with a
      * larger capacity.  This method is called automatically when the
      * number of keys in this map reaches its threshold.
      *
+     * 如果当前容量为MAXIMUM_CAPACITY，则此方法无效调整映射的大小，但将阈值设置为Integer.MAX_VALUE。
+     * 这有防止未来调用的效果。
      * If current capacity is MAXIMUM_CAPACITY, this method does not
      * resize the map, but sets threshold to Integer.MAX_VALUE.
      * This has the effect of preventing future calls.
@@ -572,19 +584,20 @@ public class HashMap<K,V>
      */
     void resize(int newCapacity) {
         Entry[] oldTable = table;
-        int oldCapacity = oldTable.length;
-        if (oldCapacity == MAXIMUM_CAPACITY) {
+        int oldCapacity = oldTable.length; //获取旧数组的长度
+        if (oldCapacity == MAXIMUM_CAPACITY) { //状态检查
             threshold = Integer.MAX_VALUE;
             return;
         }
 
-        Entry[] newTable = new Entry[newCapacity];
-        transfer(newTable, initHashSeedAsNeeded(newCapacity));
+        Entry[] newTable = new Entry[newCapacity]; //实例化新的table（数组）
+        transfer(newTable, initHashSeedAsNeeded(newCapacity)); //赋值旧数组元素到（reHash）新的数组
         table = newTable;
-        threshold = (int)Math.min(newCapacity * loadFactor, MAXIMUM_CAPACITY + 1);
+        threshold = (int)Math.min(newCapacity * loadFactor, MAXIMUM_CAPACITY + 1); //计算下次扩容需要达到的阈值
     }
 
     /**
+     * 将所有表项从当前表转移到newTable。
      * Transfers all entries from current table to newTable.
      */
     void transfer(Entry[] newTable, boolean rehash) {
@@ -593,11 +606,11 @@ public class HashMap<K,V>
             while(null != e) {
                 Entry<K,V> next = e.next;
                 if (rehash) {
-                    e.hash = null == e.key ? 0 : hash(e.key);
+                    e.hash = null == e.key ? 0 : hash(e.key); //对key进行hash
                 }
-                int i = indexFor(e.hash, newCapacity);
+                int i = indexFor(e.hash, newCapacity); //用新的hash和length来取模
                 e.next = newTable[i];
-                newTable[i] = e;
+                newTable[i] = e; //把元素存进新的table的新的index处
                 e = next;
             }
         }
@@ -869,15 +882,14 @@ public class HashMap<K,V>
     }
 
     /**
-     * Adds a new entry with the specified key, value and hash code to
-     * the specified bucket.  It is the responsibility of this
-     * method to resize the table if appropriate.
-     *
-     * Subclass overrides this to alter the behavior of put method.
+     * 添加一个新条目与指定的键，值和哈希码
+     * 指定的桶。这是我们的责任方法来调整表的大小。
+     * 子类重写这个来改变put方法的行为。
      */
     void addEntry(int hash, K key, V value, int bucketIndex) {
+        //存储元素个数大于等于扩容阈值 并且 当前下标数组位置没有存储任何元素
         if ((size >= threshold) && (null != table[bucketIndex])) {
-            resize(2 * table.length);
+            resize(2 * table.length); //扩容，新数组的长度为原来的2倍
             hash = (null != key) ? hash(key) : 0;
             bucketIndex = indexFor(hash, table.length);
         }
