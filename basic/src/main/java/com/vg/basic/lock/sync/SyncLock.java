@@ -12,15 +12,23 @@ public class SyncLock {
     }
 
     public static void main(String[] args){
-        int i  = 1;
+        System.out.println(10 % 2);
+        System.out.println(10 & (2 - 1));
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                int age = i + 1;
-            }
-        }).start();
+        System.out.println("------------------");
+        System.out.println(10 % 3);
+        System.out.println(10 & (3 - 1));
 
-//        i = 12;
+        System.out.println("------------------");
+        System.out.println(10 % 4);
+        System.out.println(10 & (4 - 1));
+
+        System.out.println("------------------");
+        System.out.println(10 % 7);
+        System.out.println(10 & (7 - 1));
+
+        System.out.println("------------------");
+        System.out.println(10 % 8);
+        System.out.println(10 & (8 - 1));
     }
 }
