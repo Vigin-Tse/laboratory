@@ -11,13 +11,13 @@ import org.springframework.stereotype.Component;
  * ApplicationContext Bean生命周期 演示
  * 1.首先容器启动后，会对scope为singleton且非懒加载的bean进行实例化，
  * 2.按照Bean定义信息配置信息，注入所有的属性，
- * 3.如果Bean实现了BeanNameAware接口，会回调该接口的setBeanName()方法，传入该Bean的id，此时该Bean就获得了自己在配置文件中的id，
- * 4.如果Bean实现了BeanFactoryAware接口,会回调该接口的setBeanFactory()方法，传入该Bean的BeanFactory，这样该Bean就获得了自己所在的BeanFactory，
- * 5.如果Bean实现了ApplicationContextAware接口,会回调该接口的setApplicationContext()方法，传入该Bean的ApplicationContext，这样该Bean就获得了自己所在的ApplicationContext，
- * 6.如果有Bean实现了BeanPostProcessor接口，则会回调该接口的postProcessBeforeInitialzation()方法，
- * 7.如果Bean实现了InitializingBean接口，则会回调该接口的afterPropertiesSet()方法，
- * 8.如果Bean配置了init-method方法，则会执行init-method配置的方法，
- * 9.如果有Bean实现了BeanPostProcessor接口，则会回调该接口的postProcessAfterInitialization()方法，
+ * 3.如果Bean实现了 BeanNameAware 接口，会回调该接口的setBeanName()方法，传入该Bean的id，此时该Bean就获得了自己在配置文件中的id，
+ * 4.如果Bean实现了 BeanFactoryAware 接口,会回调该接口的setBeanFactory()方法，传入该Bean的BeanFactory，这样该Bean就获得了自己所在的BeanFactory，
+ * 5.如果Bean实现了 ApplicationContextAware 接口,会回调该接口的setApplicationContext()方法，传入该Bean的ApplicationContext，这样该Bean就获得了自己所在的ApplicationContext，
+ * 6.如果有Bean实现了 BeanPostProcessor 接口，则会回调该接口的postProcessBeforeInitialzation()方法，
+ * 7.如果Bean实现了 InitializingBean 接口，则会回调该接口的afterPropertiesSet()方法，
+ * 8.如果Bean配置了 init-method 方法，则会执行init-method配置的方法，
+ * 9.如果有Bean实现了 BeanPostProcessor接口 ，则会回调该接口的postProcessAfterInitialization()方法，
  * 10.经过流程9之后，就可以正式使用该Bean了,对于scope为singleton的Bean,Spring的ioc容器中会缓存一份该bean的实例，而对于scope为prototype的Bean,每次被调用都会new一个新的对象，期生命周期就交给调用方管理了，不再是Spring容器进行管理了
  * 11.容器关闭后，如果Bean实现了DisposableBean接口，则会回调该接口的destroy()方法，
  * 12.如果Bean配置了destroy-method方法，则会执行destroy-method配置的方法，至此，整个Bean的生命周期结束

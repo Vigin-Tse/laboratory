@@ -24,6 +24,7 @@
         <module>dubbo</module>
         <module>redis</module>
         <module>task</module>
+        <module>aop</module>
     </modules>
     <properties>
         <java.version>1.8</java.version>

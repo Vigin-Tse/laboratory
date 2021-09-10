@@ -24,6 +24,7 @@ public class SysDepartmentServiceImpl implements SysDepartmentService {
      * 重新创建一个新的事务，如果当前存在事务，暂停当前的事务
      * @param deptName
      */
+//    @Transactional
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public void testAddDeptTransactional() {

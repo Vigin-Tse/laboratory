@@ -12,6 +12,10 @@ public enum Animal {
 
     private String name;
 
+    static{
+        System.out.println("静态代码块");
+    }
+
     Animal(){
         System.out.println("动物初始化");
     }

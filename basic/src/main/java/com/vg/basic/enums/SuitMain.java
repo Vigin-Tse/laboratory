@@ -15,5 +15,7 @@ public class SuitMain {
 
         System.out.println(Animal.CAT.getName());
         System.out.println(Animal.DOG.getName());
+
+        System.out.println(Animal.valueOf("CAT").getName());
     }
 }
