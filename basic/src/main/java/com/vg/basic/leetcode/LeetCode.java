@@ -2,6 +2,7 @@ package com.vg.basic.leetcode;
 
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -152,11 +153,15 @@ public class LeetCode {
 
     public static void main(String[] args){
         LeetCode leetCode = new LeetCode();
-        System.out.println(leetCode.findMedianSortedArrays(new int[]{1,3}, new int[]{2}));
-        System.out.println(leetCode.findMedianSortedArrays(new int[]{1,2}, new int[]{3,4}));
-        System.out.println(leetCode.findMedianSortedArrays(new int[]{0,0}, new int[]{0,0}));
-        System.out.println(leetCode.findMedianSortedArrays(new int[]{}, new int[]{1}));
-        System.out.println(leetCode.findMedianSortedArrays(new int[]{2}, new int[]{}));
-        System.out.println(leetCode.findMedianSortedArrays(new int[]{100000}, new int[]{100001}));
+
+//        System.out.println(1/0);
+//        System.out.println(0/1);
+
+        BigDecimal num1 = new BigDecimal("10.0000");
+        BigDecimal num2 = new BigDecimal("2.0");
+
+        num1 = num1.add(num2);
+        System.out.println(num1);
+//        System.out.println(num1.divide(num2, 4, BigDecimal.ROUND_HALF_UP));
     }
 }
