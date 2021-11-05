@@ -1,4 +1,4 @@
-package com.vg.basic.lock.reentrant;
+package com.vg.basic.juc.lock.reentrant;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;

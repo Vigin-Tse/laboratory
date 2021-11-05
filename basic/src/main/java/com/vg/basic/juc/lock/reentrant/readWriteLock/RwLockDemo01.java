@@ -1,4 +1,4 @@
-package com.vg.basic.lock.reentrant.readWriteLock;
+package com.vg.basic.juc.lock.reentrant.readWriteLock;
 
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;

@@ -1,13 +1,13 @@
 node{
+    //定义mvn环境
+    def mvnHome = tool 'maven'
+    env.PATH = "${mvnHome}/bin:${env.PATH}"
+
     stage('Check Out'){
         //check CODE
       git credentialsId: 'git-key',
       url: 'https://github.com/Vigin-Tse/Spring-boot-redis.git'
     }
-
-    //定义mvn环境
-    def mvnHome = tool 'maven'
-    env.PATH = "${mvnHome}/bin:${env.PATH}"
 
     stage('ProjectBuild'){
         //mvn构建

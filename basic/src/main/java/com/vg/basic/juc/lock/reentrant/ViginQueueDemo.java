@@ -1,4 +1,4 @@
-package com.vg.basic.lock.reentrant;
+package com.vg.basic.juc.lock.reentrant;
 
 import java.util.ArrayList;
 import java.util.List;

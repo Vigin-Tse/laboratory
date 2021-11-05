@@ -1,4 +1,4 @@
-package com.vg.basic.lock.sync;
+package com.vg.basic.juc.lock.sync;
 
 public class lockArea {
 

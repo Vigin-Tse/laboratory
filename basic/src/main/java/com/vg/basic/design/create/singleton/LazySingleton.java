@@ -24,9 +24,15 @@ public class LazySingleton {
      */
     static synchronized LazySingleton getInstance(){
 
-        //等第一次获取时才实例对象
+        //等第一次获取时才实例对象，逻辑上是可以去除的，不影响单例的正确性，但是去除之后效率低，不管instance是否已经初始化，都会进行synchronized操作，重操作消耗性能。
+        // 加上之后，如果已经初始化直接返回结果，不会进行synchronized操作。
         if (INSTANCE == null){
-            INSTANCE = new LazySingleton();
+            //双检锁，防止多线程环境下出现线程安全问题而多次创建对象
+            synchronized (LazySingleton.class){
+                if (INSTANCE == null){
+                    INSTANCE = new LazySingleton();
+                }
+            }
         }
 
         return INSTANCE;
