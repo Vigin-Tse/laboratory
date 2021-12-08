@@ -5,4 +5,6 @@ package com.vg.basic.thread;
  * @time: 2021/12/7 16:05
  */
 public class BSon {
+
+    public static int a;
 }
