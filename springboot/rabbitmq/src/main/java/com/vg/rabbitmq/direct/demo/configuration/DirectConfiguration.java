@@ -13,6 +13,10 @@ import org.springframework.context.annotation.Configuration;
  * @Description 直连型交换机，根据消息携带的路由键将消息投递给对应队列。
  * 大致流程，有一个队列绑定到一个直连交换机上，同时赋予一个路由键 routing key 。
  * 然后当一个消息携带着路由值为X，这个消息通过生产者发送给交换机时，交换机就会根据这个路由值X去寻找绑定值也是X的队列。
+ *
+ * 消息持久化配置：
+ *       Spring AMQP 是对原生的 RabbitMQ 客户端的封装，一般情况下，我们只需要定义 交换器的持久化 和 队列的持久化 就行了，消息的持久化是默认的。
+ *
  * @Author xieweij
  * @create 2020/5/4 10:09
  */

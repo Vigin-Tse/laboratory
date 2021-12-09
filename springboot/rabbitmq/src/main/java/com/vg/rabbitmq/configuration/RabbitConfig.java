@@ -22,6 +22,18 @@ public class RabbitConfig {
         //设置开启Mandatory,才能触发回调函数,无论消息推送结果怎么样都强制调用回调函数
         rabbitTemplate.setMandatory(true);
 
+        /**
+         * 下面这两种回调函数都是在什么情况会触发呢？
+         *
+         * 先从总体的情况分析，推送消息存在四种情况：
+         *
+         * ①消息推送到server，但是在server里找不到交换机     ①这种情况触发的是 ConfirmCallback 回调函数（ack:false）。
+         * ②消息推送到server，找到交换机了，但是没找到队列    ②这种情况触发的是 ConfirmCallback(ack:ture)和 RetrunCallback(响应码：312，回应信息：NO_ROUTE)两个回调函数。
+         * ③消息推送到sever，交换机和队列啥都没找到          ③这种情况触发的是 ConfirmCallback（ack:false） 回调函数。
+         * ④消息推送成功                                 ④这种情况触发的是 ConfirmCallback(ack:ture) 回调函数
+         */
+
+        //主要是用来判断消息是否有正确到达交换机，如果有，那么就 ack 就返回 true；如果没有，则是 false。
         rabbitTemplate.setConfirmCallback(new RabbitTemplate.ConfirmCallback() {
             @Override
             public void confirm(CorrelationData correlationData, boolean ack, String cause) {
@@ -31,6 +43,8 @@ public class RabbitConfig {
             }
         });
 
+        //如果你的消息已经正确到达交换机，但是后续处理出错了，那么就会回调 return，并且把信息送回给你（前提是需要设置了 Mandatory，不设置那么就丢弃）；
+        // 如果消息没有到达交换机，那么不会调用 return 的东西。
         rabbitTemplate.setReturnCallback(new RabbitTemplate.ReturnCallback() {
             @Override
             public void returnedMessage(Message message, int replyCode, String replyText, String exchange, String routingKey) {
