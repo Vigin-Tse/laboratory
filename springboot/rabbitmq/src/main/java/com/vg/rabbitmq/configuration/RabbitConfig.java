@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
  * @Author xieweij
  * @create 2020/5/4 15:51
  */
-@Configuration
+//@Configuration
 public class RabbitConfig {
 
     @Bean
@@ -35,6 +35,12 @@ public class RabbitConfig {
 
         //主要是用来判断消息是否有正确到达交换机，如果有，那么就 ack 就返回 true；如果没有，则是 false。
         rabbitTemplate.setConfirmCallback(new RabbitTemplate.ConfirmCallback() {
+            /**
+             *  producer -> Exchange
+             *  ConfirmCallback只确认消息是否到达exchange
+             *        以实现方法confirm中ack属性为标准，true到达
+             *  config : 需要开启rabbitmq得ack    publisher-confirm-type
+             */
             @Override
             public void confirm(CorrelationData correlationData, boolean ack, String cause) {
                 System.out.println("ConfirmCallback:     "+"相关数据："+correlationData);
@@ -46,6 +52,11 @@ public class RabbitConfig {
         //如果你的消息已经正确到达交换机，但是后续处理出错了，那么就会回调 return，并且把信息送回给你（前提是需要设置了 Mandatory，不设置那么就丢弃）；
         // 如果消息没有到达交换机，那么不会调用 return 的东西。
         rabbitTemplate.setReturnCallback(new RabbitTemplate.ReturnCallback() {
+            /**
+             *  Exchange -> Queue
+             *  ReturnCallback消息没有正确到达队列时触发回调，如果正确到达队列不执行
+             *  config : 需要开启rabbitmq发送失败回退    publisher-returns    或rabbitTemplate.setMandatory(true);设置为true
+             */
             @Override
             public void returnedMessage(Message message, int replyCode, String replyText, String exchange, String routingKey) {
                 System.out.println("ReturnCallback:     "+"消息："+message);
@@ -54,7 +65,21 @@ public class RabbitConfig {
                 System.out.println("ReturnCallback:     "+"交换机："+exchange);
                 System.out.println("ReturnCallback:     "+"路由键："+routingKey);
             }
-        });
+        }
+
+                /**
+                 *
+                 * queue -> consumer
+                 * 默认:
+                 *     客户端接收到即确认
+                 * 手动确认：
+                 *     配置中开启消费ack确认
+                 *      listener:
+                 *           simple:
+                 *             acknowledge-mode: manual #消费者手动确认消息
+                 */
+
+        );
 
         return rabbitTemplate;
     }
