@@ -21,7 +21,9 @@ public class DirectConsumer {
     public void getMessage(Map messages) {
         System.out.println(JSON.toJSON(messages));
         try {
-            System.out.println(1/0);
+            Thread.sleep(10000L);
+            System.out.println(Thread.currentThread().getName() + ",休眠结束");
+//            System.out.println(1/0);
         }catch (Exception e){
             System.out.println("异常：" + messages.get("id"));
         }

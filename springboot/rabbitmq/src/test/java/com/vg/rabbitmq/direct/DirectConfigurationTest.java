@@ -18,6 +18,6 @@ class DirectConfigurationTest {
 
     @Test
     public void directSenderTest(){
-        directProvider.sendDirectMessage(1);
+        directProvider.sendDirectMessage(5);
     }
 }
