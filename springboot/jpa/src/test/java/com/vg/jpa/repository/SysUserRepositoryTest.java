@@ -1,6 +1,7 @@
 package com.vg.jpa.repository;
 
 import com.alibaba.fastjson.JSON;
+import com.vg.jpa.domain.entity.SysUserEntity;
 import com.vg.jpa.domain.entity.UserDepartmentEntity;
 import com.vg.jpa.domain.model.SysUser;
 import org.junit.jupiter.api.Test;
@@ -91,13 +92,27 @@ public class SysUserRepositoryTest {
 
     @Test
     public void userDepatQueryByJpql(){
-        List<Optional<UserDepartmentEntity>> entities = this.userRepository.getAllUserDepatByJpql();
+//        List<Optional<UserDepartmentEntity>> entities = this.userRepository.getAllUserDepatByJpql();
+        List<UserDepartmentEntity> entities = this.userRepository.getAllUserDepatByJpql();
         System.out.println(JSON.toJSONString(entities));
     }
 
     @Test
     public void userDepatQueryByJpql2(){
-        Optional<UserDepartmentEntity> entity = this.userRepository.getUserDepatByJpql(1);
+//        Optional<UserDepartmentEntity> entity = this.userRepository.getUserDepatByJpql(1);
+        UserDepartmentEntity entity = this.userRepository.getUserDepatByJpql(1);
         System.out.println(JSON.toJSONString(entity));
+    }
+
+    @Test
+    public void getAllUser(){
+        List<SysUser> users = this.userRepository.getAllUser();
+        System.out.println(JSON.toJSONString(users));
+    }
+
+    @Test
+    public void getAllUserWithEntity(){
+        List<SysUserEntity> userEntities = this.userRepository.getAllUserWithEntity();
+        System.out.println(JSON.toJSONString(userEntities));
     }
 }
