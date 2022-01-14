@@ -1,7 +1,7 @@
 package com.vg.basic.thread;
 
 /**
- * @author: xieweij
+ * @author:
  * @time: 2021/12/7 15:53
  */
 public class Xc {
