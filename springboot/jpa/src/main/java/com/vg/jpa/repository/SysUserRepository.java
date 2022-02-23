@@ -17,6 +17,9 @@ public interface SysUserRepository extends JpaRepository<SysUser, Integer> {
 
     /**
      * 测试原生sql返回自定义实体类结果---不能这样用
+     *  You have an error in your SQL syntax;
+     *  check the manual that corresponds to your MySQL server version for the right syntax to use near
+     *  '.vg.jpa.domain.entity.SysUserEntity(u.id, u.user_name) from sys_user u' at line 1
      * @return
      */
     @Query(value = "select new com.vg.jpa.domain.entity.SysUserEntity(u.id, u.user_name) from sys_user u", nativeQuery = true)
