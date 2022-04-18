@@ -1,0 +1,6 @@
+# 实现自动配置,类通过键值对的方式写在你的spring.factories
+# 注意，自动配置类，键必须是org.springframework.boot.autoconfigure.EnableAutoConfiguration
+# org.springframework.boot.autoconfigure.EnableAutoConfiguratio=xxx.xxx.yourClass,yyy.yyy.yourClass2
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.vg.share.configuration.ShareExampleConguration,\
+  com.vg.shareexample.ConditionA

@@ -19,6 +19,7 @@ public class ThreadPoolExecutorTest {
                         byte[] temp = new byte[1024 * 512];
                         System.out.println(Thread.currentThread().getName());
                         Thread.sleep(new Random().nextInt(100)); // 随机睡眠200毫秒秒以内
+                        Thread.currentThread().getName();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -26,7 +27,18 @@ public class ThreadPoolExecutorTest {
 //                System.out.println(Thread.currentThread().getName());
             }).start();
         }, 100, 10000, TimeUnit.MILLISECONDS);
+
+
+        //创建线程
+        Thread t = new Thread(() ->{
+            //线程执行逻辑
+            int i = 1;
+
+        });
+        //启动线程
+        t.start();
     }
+
     }
 
 //    public static void main(String[] args) throws InterruptedException {
