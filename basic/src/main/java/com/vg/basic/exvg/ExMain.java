@@ -1,6 +1,6 @@
 package com.vg.basic.exvg;
 
-import com.vg.ext.VgServiceImplInvoke;
+//import com.vg.ext.VgServiceImplInvoke;
 
 /**
  * 使用线程上下文加载器打破双亲委派模型
@@ -19,8 +19,8 @@ public class ExMain {
 //        System.out.println("ExV:" + c.getClass().getClassLoader());
 //        System.out.println("VgServiceImpl:" + vgService.getClass().getClassLoader());
         System.out.println("com.vg.basic.exvg.ExMain：" + Thread.currentThread().getContextClassLoader());
-        VgServiceImplInvoke invoke = new VgServiceImplInvoke();
-        invoke.doService();
+//        VgServiceImplInvoke invoke = new VgServiceImplInvoke();
+//        invoke.doService();
 
 
 

@@ -8,7 +8,7 @@ import java.net.URLClassLoader;
  */
 public class LoaderTest {
     public static void main(String[] args) throws Exception {
-        URL classUrl = new URL("file:D:\\");//jvm 类放在位置
+        URL classUrl = new URL("file:D:\\classes\\");//jvm 类放在位置
 
         URLClassLoader parentLoader = new URLClassLoader(new URL[]{classUrl});
 
