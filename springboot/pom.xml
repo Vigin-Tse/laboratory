@@ -25,6 +25,8 @@
         <module>redis</module>
         <module>task</module>
         <module>aop</module>
+        <module>zookper</module>
+        <module>netty</module>
     </modules>
     <properties>
         <java.version>1.8</java.version>
